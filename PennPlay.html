@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>Penn Play</title>
+		<meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+                <style>
+                    body {
+                        font-family: Monospace;
+                        background-color: #FFFFFF;
+                        margin: 0px;
+                        overflow: hidden;
+                    }
+                    </style>
+                </head>
+	<body>
+        
+		<script src="lib/Three.js"></script>
+		<script src="lib/Stats.js"></script>
+		<script src="lib/Tween.js"></script>
+        <script src="SiteObject.js"></script>
+        <script src="Player.js"></script>
+        <script src="Physics.js"></script>
+        <script src="Decoration.js"></script>
+        <script src="Platform.js"></script>
+        <script src="Button.js"></script>
+        <script src="Level.js"></script>
+        <script src="level1.js"></script>
+        <script src="Preloader.js"></script>
+        <script src="textures.js"></script>
+
+        
+        
+		
+		<script type="text/javascript">
+            var GAME = GAME || {};
+			var container, stats, loader;
+            
+            //Scene variables
+			var camera, scene, renderer;
+            var targetZ = 5000;
+            var light;
+            
+            //Screen variables
+            var mouseX = 0;
+			var mouseY = 0;
+            var mouseBool = false;
+            var dX = 0;
+            var dY = 0;
+            var targetdX = 0;
+            var targetdY = 0;
+
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+            
+            //Intersection variables
+            var projector = new THREE.Projector();;
+            var object = [];
+            GAME.intersectsPlatforms = [];
+            GAME.videos = [];
+            GAME.form = document.getElementById( 'form' );
+            
+            
+            init();
+            animate();
+            
+			function init() {
+                
+                //Setup
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+                
+				scene = new THREE.Scene();
+                //scene.fog = new THREE.Fog( 0xFFFFFF, 5000,6500);
+                camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
+                camera.position.z = targetZ;
+                camera.position.y = 0;
+                scene.add( camera );
+                light = new THREE.PointLight( 0xFFFFFF, 1, 0);
+                light.position.z = 2000;
+                scene.add(light);
+                
+                //Game variables
+                GAME.framerate = 60;
+                GAME.keyUp = true;
+                GAME.moveCount = 0;
+                GAME.gameplayMode = 0;
+                GAME.currentLevel = GAME.level1;
+                GAME.loaded = false;
+
+                //Can add loading bar eventually
+                GAME.preloadTextures(
+                                     function(x){console.log(x)},
+                                     function(){GAME.preloadAudio(
+                                                       function(x){console.log(x)},
+                                                       function() {GAME.currentLevel.init(); GAME.loaded = true;
+                                                       }
+                                                                  )}
+                                     );
+                
+                
+                //renderer 
+               renderer = new THREE.WebGLRenderer({ antialias: true});
+				renderer.setSize( window.innerWidth, window.innerHeight );
+                renderer.setClearColor( 0xffffff, 1 );
+                
+                GAME.renderer = renderer;
+				container.appendChild( renderer.domElement );
+                
+				stats = new Stats();
+				stats.domElement.style.position = 'absolute';
+				stats.domElement.style.top = '0px';
+				container.appendChild( stats.domElement );
+                
+                
+                //event listeners
+                document.addEventListener( 'mousemove', onDocumentMouseMove, true );
+                document.addEventListener( 'mousedown', onDocumentMouseDown, true );
+                document.addEventListener( 'mouseup', onDocumentMouseUp, true );
+                document.addEventListener( 'keydown', onkeydown, true );
+                document.addEventListener( 'keyup', onkeyup, true );
+
+                
+                
+                
+			}
+            
+            //used for moving objects
+            function onDocumentMouseMove(event) {
+                tempX = mouseX;
+                tempY = mouseY;
+                mouseX = ( event.clientX - windowHalfX )*2;
+				mouseY = ( windowHalfY - event.clientY )*2;
+                dX = mouseX - tempX;
+                dY = mouseY - tempY;
+                GAME.prevCount = GAME.moveCount
+                GAME.moveCount++;
+                if (GAME.intersectsPlatforms.length > 0) {
+                    for (var i = 0; i < GAME.intersectsPlatforms.length;i++){
+                        GAME.intersectsPlatforms[i].object.movePosition({ x:2*dX , y:2*dY , z:0 });
+                    }
+                }
+                
+            }
+            
+            //ray casting
+            function onDocumentMouseDown( event ) {
+
+                event.preventDefault();
+
+                 var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 );
+                projector.unprojectVector( vector, camera );
+                
+                var ray = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+
+                
+                GAME.intersectsPlatforms = ray.intersectObjects( GAME.siteObjects);
+                for(var i =0; i <GAME.intersectsPlatforms.length; i++){
+                    GAME.intersectsPlatforms[i].object.held = true;
+
+                }
+                
+                
+            }
+
+            //click any selected buttons
+            function onDocumentMouseUp( event ) {
+
+                for(var i =0; i <GAME.intersectsPlatforms.length; i++){
+                    GAME.intersectsPlatforms[i].object.clicked();
+                    GAME.intersectsPlatforms[i].object.velocity.x = 0;
+                    GAME.intersectsPlatforms[i].object.velocity.y = 0;
+                    GAME.intersectsPlatforms[i].object.held = false;
+
+                }
+                GAME.intersectsPlatforms = [];
+                
+                
+                
+            }
+
+
+            function onkeydown( event ) {
+                event.preventDefault();
+                //right
+                if (event.keyCode === 39) {
+                    GAME.rightIsDown=true;
+                    if (!GAME.player.takingDamage){
+                        GAME.player.acceleration.x = 0;
+                        GAME.player.movePlayerRight({  speed:12});
+                    };
+                    GAME.keyUp = false;
+                }
+
+                //left
+                if (event.keyCode === 37) {
+                    GAME.leftIsDown=true;
+                    if (!GAME.player.takingDamage){
+                        GAME.player.acceleration.x = 0;
+                        GAME.player.movePlayerLeft({  speed:12});
+                    };
+                    GAME.keyUp = false;
+                }
+
+                //space
+                if (event.keyCode === 32) {
+                    if (!GAME.player.takingDamage){
+                        GAME.player.acceleration.x = 0;
+                        GAME.player.jumpPlayer({  jump:GAME.player.jumpHeight});
+                        
+                    };
+                }
+            }
+            function onkeyup( event ) {
+                event.preventDefault();
+                if (event.keyCode === 39) {
+
+                    GAME.rightIsDown=false;
+                    if(!GAME.rightIsDown&&!GAME.leftIsDown){
+                        GAME.keyUp = true;
+                    }
+                }
+                 if (event.keyCode === 37) {
+
+                    GAME.leftIsDown=false;
+                    if(!GAME.rightIsDown&&!GAME.leftIsDown){
+                        GAME.keyUp = true;
+                    }
+                }
+            }
+            
+			
+            
+			function animate() {
+                
+				requestAnimationFrame( animate );
+                
+                render();
+                
+                //TWEEN.update();
+				stats.update();
+                
+			}
+
+
+            //called every frame
+			function render() {
+
+                if(GAME.loaded){
+                    //gravity for player
+                    GAME.applyGravity({ player:GAME.player});
+
+                    //if split into separate levels can have separete render cuntions
+                    //GAME.currentLevel.render();
+
+                    //set player to not intersected
+                    GAME.player.intersected = false;
+
+                    //test plater intersections with other platforms (plus platform collisions if wanted)
+                    for(var i = 0; i<GAME.siteObjects.length; i++){
+                        for(var j = i+1; j<GAME.siteObjects.length; j++){
+                            if(i!=j){
+                                var interNum2 = GAME.intersects({ object1:GAME.siteObjects[i], object2:GAME.siteObjects[j] });
+
+                                if(interNum2!=-1){//&&interNum!=4){
+                                    //GAME.collide({object1:GAME.siteObjects[i],object2:GAME.siteObjects[j]})
+                                }
+                            }
+                        }
+
+                        //get direction of intersection
+                        var interNum = GAME.intersects({ object1:GAME.player, object2:GAME.siteObjects[i]});
+                        //Call appropriate behavior on site object
+                        GAME.siteObjects[i].intersectPlayer({interNum:interNum});
+                    }
+
+                    //Stop platforms from contiuing to move after letting go
+                    GAME.prevCount++;
+                    if (GAME.prevCount>GAME.moveCount){
+                        if (GAME.intersectsPlatforms.length > 0) {
+                            for (var i = 0; i < GAME.intersectsPlatforms.length;i++){
+                                GAME.intersectsPlatforms[i].object.movePosition({ x:0 , y:0 , z:0 });
+                            }
+                        }
+                    }
+
+                    //call update positions on all objects
+                    for(var i = 0; i<GAME.siteObjects.length; i++){
+                        GAME.siteObjects[i].updatePosition();
+                    }
+                    GAME.player.updatePosition();
+                }
+
+
+                targetZ = 5000;
+                light.position.z = 2000;
+                
+                light.position.x = camera.position.x;
+                light.position.y = camera.position.y;
+                
+
+                //update camera positions
+                targetY = GAME.player.position.y;
+                if(targetY > 1500){
+                    targetY = 1500;
+                }
+                if(targetY < -1500){
+                    targetY = -1500;
+                }
+                camera.position.y += (targetY+ 500 - camera.position.y)*.02
+
+                targetX = GAME.player.position.x;
+                if(targetX > 1500){
+                    targetX = 1500;
+                }
+                if(targetX < -1500){
+                    targetX = -1500;
+                }
+                camera.position.x += (targetX - camera.position.x)*.02
+
+                //render
+				renderer.render( scene, camera );
+                
+			}
+            
+            </script>
+        
+	</body>
+</html>
