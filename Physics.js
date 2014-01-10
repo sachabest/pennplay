@@ -30,6 +30,9 @@ GAME.intersects = function(params){
     //GAME.collide(params);
     obj1 = params.object1;
     obj2 = params.object2;
+    if(obj1.position.z != obj2.position.z){
+      return -1;
+    }
     var error = 10;
     if(obj1.bounds.left > obj2.bounds.right&&obj1.bounds.left + obj1.velocity.x>obj2.bounds.right + obj2.velocity.x){
         return -1;

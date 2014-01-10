@@ -83,7 +83,13 @@ GAME.Player.prototype.jumpPlayer = function(params) {
         this.setBounds();
         }
     }
+
+GAME.Player.prototype.shiftPlanes = function(params){
+    this.velocity.z = params.speed;
+    this.velocity.y =params.jump;
+}
   /*  
+}
 GAME.Player.prototype.updatePosition = function(params) {
         this.position.add(this.velocity);
         this.bounds.left+= this.velocity.x;

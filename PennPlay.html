@@ -71,7 +71,7 @@
 				document.body.appendChild( container );
                 
 				scene = new THREE.Scene();
-                //scene.fog = new THREE.Fog( 0xFFFFFF, 5000,6500);
+                //scene.fog = new THREE.Fog( 0xFFFFFF, 5000,10000);
                 camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
                 camera.position.z = targetZ;
                 camera.position.y = 0;
@@ -202,6 +202,22 @@
                     GAME.keyUp = false;
                 }
 
+                if (event.keyCode === 38) {
+                    if(GAME.player.position.z!=GAME.backPlane){
+                        GAME.player.shiftPlanes({speed:-30,jump:80});  
+                    }
+                    //GAME.keyUp = false;
+                }
+
+
+                if (event.keyCode === 40) {
+                    if(GAME.player.position.z!=GAME.playerPlane){
+                        GAME.player.shiftPlanes({speed:30,jump:80});  
+                    }
+                    //GAME.keyUp = false;
+                }
+
+
                 //space
                 if (event.keyCode === 32) {
                     if (!GAME.player.takingDamage){
@@ -317,6 +333,9 @@
                     targetX = -1500;
                 }
                 camera.position.x += (targetX - camera.position.x)*.02
+
+
+                camera.position.z += (GAME.player.position.z+5000 - camera.position.z)*.05
 
                 //render
 				renderer.render( scene, camera );

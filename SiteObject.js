@@ -75,6 +75,14 @@ GAME.SiteObject.prototype.updatePosition = function() {
         	this.velocity = (this.siteObject.velocity);
         }
         this.velocity.add(this.acceleration);
+        if(this.position.z+this.velocity.z <GAME.backPlane){
+            this.velocity.z = 0;
+            this.position.z = GAME.backPlane;
+        }
+        if(this.position.z+this.velocity.z >GAME.playerPlane){
+            this.velocity.z = 0;
+            this.position.z = GAME.playerPlane;
+        }
         this.position.add(this.velocity);
         this.setBounds();
         /*this.bounds.left+= this.velocity.x;
