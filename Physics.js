@@ -33,14 +33,14 @@ GAME.intersects = function(params){
     if(obj1.position.z != obj2.position.z){
       return -1;
     }
-    var error = 10;
-    if(obj1.bounds.left > obj2.bounds.right&&obj1.bounds.left + obj1.velocity.x>obj2.bounds.right + obj2.velocity.x){
+    var error = 1;
+    if(obj1.bounds.left >= obj2.bounds.right&&obj1.bounds.left + obj1.velocity.x>=obj2.bounds.right + obj2.velocity.x){
         return -1;
-      }else if(obj1.bounds.right < obj2.bounds.left&&obj1.bounds.right + obj1.velocity.x<obj2.bounds.left + obj2.velocity.x){
+      }else if(obj1.bounds.right <= obj2.bounds.left&&obj1.bounds.right + obj1.velocity.x<=obj2.bounds.left + obj2.velocity.x){
         return -1;
-      }else if(obj1.bounds.bottom > obj2.bounds.top&&obj1.bounds.bottom + obj1.velocity.y>obj2.bounds.top + obj2.velocity.y){
+      }else if(obj1.bounds.bottom >= obj2.bounds.top&&obj1.bounds.bottom + obj1.velocity.y>=obj2.bounds.top + obj2.velocity.y){
         return -1;
-      }else if(obj1.bounds.top < obj2.bounds.bottom&&obj1.bounds.top + obj1.velocity.y<obj2.bounds.bottom + obj2.velocity.y){
+      }else if(obj1.bounds.top <= obj2.bounds.bottom&&obj1.bounds.top + obj1.velocity.y<=obj2.bounds.bottom + obj2.velocity.y){
         return -1;
       } else if (obj1.bounds.bottom >= obj2.bounds.top-error && obj1.bounds.bottom+obj1.velocity.y<=obj2.bounds.top +obj2.velocity.y){
         return 1;
@@ -84,7 +84,7 @@ GAME.friction = function(params){
 
 
 GAME.applyGravity = function(params){
-    params.player.velocity.y-=1.5;
+    params.player.velocity.y-=.3;
         
     
 };

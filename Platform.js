@@ -14,8 +14,7 @@ GAME.Platform = function(params){//(x, y, z, width, height, dWidth, dHeight, map
 GAME.Platform.prototype = GAME.clone(GAME.SiteObject.prototype);
 GAME.Platform.prototype.constructor = GAME.Platform;
 GAME.Platform.prototype.intersectPlayer = function(params) {
-var interNum = params.interNum
-//console.log(interNum);
+var interNum = params.interNum;
     /*if(interNum==0||interNum==2||interNum==3||interNum==4){
         GAME.collide({object1:GAME.player, object2:this});
 
@@ -36,8 +35,8 @@ var interNum = params.interNum
             GAME.friction({object1:GAME.player});
         }
          if(this.trigger){//&&!this.alreadyTriggered){
-            //this.trigger();
-            //this.alreadyTriggered = true;
+            this.trigger();
+            this.alreadyTriggered = true;
         }
     } else if(interNum===0){
         GAME.player.acceleration.x = 0;

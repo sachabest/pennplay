@@ -38,7 +38,7 @@
             
             //Scene variables
 			var camera, scene, renderer;
-            var targetZ = 5000;
+            var targetZ = 800;
             var light;
             
             //Screen variables
@@ -71,14 +71,17 @@
 				document.body.appendChild( container );
                 
 				scene = new THREE.Scene();
-                //scene.fog = new THREE.Fog( 0xFFFFFF, 5000,10000);
+                scene.fog = new THREE.Fog( 0xFFFFFF, 5000,10000);
                 camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
                 camera.position.z = targetZ;
                 camera.position.y = 0;
                 scene.add( camera );
-                light = new THREE.PointLight( 0xFFFFFF, 1, 0);
-                light.position.z = 2000;
-                scene.add(light);
+                light = new THREE.SpotLight( 0x000000);
+                light.position.z = 100;
+                light.target.x = .5;
+                light.target.y = 0;
+                light.target.z = -1;
+                //scene.add(light);
                 
                 //Game variables
                 GAME.framerate = 60;
@@ -103,7 +106,19 @@
                renderer = new THREE.WebGLRenderer({ antialias: true});
 				renderer.setSize( window.innerWidth, window.innerHeight );
                 renderer.setClearColor( 0xffffff, 1 );
-                
+                /*renderer.shadowMapEnabled = true;
+                renderer.shadowMapSoft = false;
+
+                renderer.shadowCameraNear = 3;
+                renderer.shadowCameraFar = camera.far;
+                renderer.shadowCameraFov = 50;
+
+                renderer.shadowMapBias = 0.0039;
+                renderer.shadowMapDarkness = 0.5;
+                renderer.shadowMapWidth = 1024;
+                renderer.shadowMapHeight = 1024;
+
+                light.castShadow = true;*/
                 GAME.renderer = renderer;
 				container.appendChild( renderer.domElement );
                 
@@ -135,10 +150,15 @@
                 dY = mouseY - tempY;
                 GAME.prevCount = GAME.moveCount
                 GAME.moveCount++;
+                var closestObj = 0;
                 if (GAME.intersectsPlatforms.length > 0) {
                     for (var i = 0; i < GAME.intersectsPlatforms.length;i++){
-                        GAME.intersectsPlatforms[i].object.movePosition({ x:2*dX , y:2*dY , z:0 });
+                        //GAME.intersectsPlatforms[i].object.movePosition({ x:dX/3.5 , y:dY/3.5 , z:0 });
+                        if(GAME.intersectsPlatforms[i].object.position.z>GAME.intersectsPlatforms[closestObj].object.position.z){
+                            closestObj=i;
+                        }
                     }
+                    GAME.intersectsPlatforms[closestObj].object.movePosition({ x:dX/3.5 , y:dY/3.5 , z:0 });
                 }
                 
             }
@@ -155,8 +175,12 @@
 
                 
                 GAME.intersectsPlatforms = ray.intersectObjects( GAME.siteObjects);
+                var count = 0;
                 for(var i =0; i <GAME.intersectsPlatforms.length; i++){
                     GAME.intersectsPlatforms[i].object.held = true;
+                    count++;
+                    console.log(count);
+
 
                 }
                 
@@ -187,7 +211,7 @@
                     GAME.rightIsDown=true;
                     if (!GAME.player.takingDamage){
                         GAME.player.acceleration.x = 0;
-                        GAME.player.movePlayerRight({  speed:12});
+                        GAME.player.movePlayerRight({  speed:2});
                     };
                     GAME.keyUp = false;
                 }
@@ -197,22 +221,22 @@
                     GAME.leftIsDown=true;
                     if (!GAME.player.takingDamage){
                         GAME.player.acceleration.x = 0;
-                        GAME.player.movePlayerLeft({  speed:12});
+                        GAME.player.movePlayerLeft({  speed:2});
                     };
                     GAME.keyUp = false;
                 }
 
                 if (event.keyCode === 38) {
-                    if(GAME.player.position.z!=GAME.backPlane){
-                        GAME.player.shiftPlanes({speed:-30,jump:80});  
+                    if(GAME.player.position.z==GAME.playerPlane){
+                        GAME.player.shiftPlanes({speed:-4.5,jump:12});  
                     }
                     //GAME.keyUp = false;
                 }
 
 
                 if (event.keyCode === 40) {
-                    if(GAME.player.position.z!=GAME.playerPlane){
-                        GAME.player.shiftPlanes({speed:30,jump:80});  
+                    if(GAME.player.position.z==GAME.backPlane){
+                        GAME.player.shiftPlanes({speed:4.5,jump:12});  
                     }
                     //GAME.keyUp = false;
                 }
@@ -308,7 +332,7 @@
                 }
 
 
-                targetZ = 5000;
+                //targetZ = 700;
                 light.position.z = 2000;
                 
                 light.position.x = camera.position.x;
@@ -317,25 +341,25 @@
 
                 //update camera positions
                 targetY = GAME.player.position.y;
-                if(targetY > 1500){
-                    targetY = 1500;
+                if(targetY > 300){
+                    targetY = 300;
                 }
-                if(targetY < -1500){
-                    targetY = -1500;
+                if(targetY < -300){
+                    targetY = -300;
                 }
-                camera.position.y += (targetY+ 500 - camera.position.y)*.02
+                camera.position.y += (targetY - camera.position.y)*.01;
 
                 targetX = GAME.player.position.x;
-                if(targetX > 1500){
-                    targetX = 1500;
+                if(targetX > 300){
+                    targetX = 300;
                 }
-                if(targetX < -1500){
-                    targetX = -1500;
+                if(targetX < -300){
+                    targetX = -300;
                 }
-                camera.position.x += (targetX - camera.position.x)*.02
+                camera.position.x += (targetX - camera.position.x)*.01;
 
 
-                camera.position.z += (GAME.player.position.z+5000 - camera.position.z)*.05
+                camera.position.z += (GAME.player.position.z+1000 - camera.position.z)*.5
 
                 //render
 				renderer.render( scene, camera );

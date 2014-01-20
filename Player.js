@@ -17,7 +17,7 @@ GAME.Player = function(params){
     
     this.jumps =0;
     this.bounces = 0;
-    this.jumpHeight = 24;
+    this.jumpHeight = 5.5;
     this.intersected = false;
     this.impededRight = false;
     this.impededLeft = false;

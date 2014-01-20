@@ -15,13 +15,15 @@ GAME.SiteObject = function( params ) {
     //}
     var material1 = new THREE.MeshBasicMaterial({color: params.color, transparent:true});
     THREE.Mesh.call(this,geometry1,material1);
+    //this.castShadow = true;
+    //this.receiveShadow = true;
     if (params.map) {
         this.material.map=params.map;
     }
     //this.doubleSided=true;
     //this.position = new THREE.Vector3 ( params.x+ this.width/2, params.y+ this.height/2, params.z );
    
-
+this.once = true;
     //PHYSICS
     this.position = new THREE.Vector3 ( params.x, params.y, params.z );
     //this.position.set(this.position.x, this.position.y, this.position.z);
@@ -40,12 +42,17 @@ GAME.SiteObject = function( params ) {
     this.trigger = params.trigger;
     this.alreadyTriggered = false;
 
-    //CHILDREN
+    //PARENT
+    this.locked = false;
     this.siteObject = params.siteObject;
     if(this.siteObject) {
         this.position.set(this.siteObject.position.x+ params.x, 
                           this.siteObject.position.y+params.y,
                           this.siteObject.position.z + params.z );
+        if(params.locked){
+            this.locked = true;
+            this.position = this.siteObject.position;
+        }
         //this.siteObject.trigger = this.trigger;
     }
     if(params.scaleX){
@@ -71,20 +78,24 @@ GAME.SiteObject.prototype.updatePosition = function() {
 	            this.velocity.y = Math.abs(this.velocity.y);
 	        };
     	}*/
-    	if(this.siteObject){
-        	this.velocity = (this.siteObject.velocity);
+        if(!this.locked){
+            this.velocity.add(this.acceleration);
+            if(this.position.z+this.velocity.z <GAME.backPlane){
+                this.velocity.z = 0;
+                this.position.z = GAME.backPlane;
+            }
+            if(this.position.z+this.velocity.z >GAME.playerPlane){
+                this.velocity.z = 0;
+                this.position.z = GAME.playerPlane;
+            }
+            var tempVelocity = new  THREE.Vector3(this.velocity.x,this.velocity.y,this.velocity.z);
+            if(this.siteObject){
+                tempVelocity.x += this.siteObject.velocity.x;
+                tempVelocity.y += this.siteObject.velocity.y;
+            }
+            this.position.add(tempVelocity);
+            this.setBounds();
         }
-        this.velocity.add(this.acceleration);
-        if(this.position.z+this.velocity.z <GAME.backPlane){
-            this.velocity.z = 0;
-            this.position.z = GAME.backPlane;
-        }
-        if(this.position.z+this.velocity.z >GAME.playerPlane){
-            this.velocity.z = 0;
-            this.position.z = GAME.playerPlane;
-        }
-        this.position.add(this.velocity);
-        this.setBounds();
         /*this.bounds.left+= this.velocity.x;
         this.bounds.right+= this.velocity.x;
         this.bounds.top+= this.velocity.y;
