@@ -46,6 +46,7 @@ this.once = true;
     this.trigger = params.trigger;
     this.alreadyTriggered = false;
     this.targetX = null;
+    this.targetY = null;
     this.hidden = params.hidden;
     if(params.hardBottom!=null){
         this.hardBottom = params.hardBottom;
@@ -126,6 +127,26 @@ GAME.SiteObject.prototype.updatePosition = function() {
                 } 
                 
             }
+
+            if (this.targetY!=null){
+                //console.log(this.targetX);
+                if(tempVelocity.y<0){
+                    if(tempVelocity.y + this.position.y<= this.targetY){
+                        tempVelocity.y = 0;
+                        this.velocity.y = 0;
+                        this.position.y = this.targetY;
+                        this.targetY = null;
+                    }
+                } else if (tempVelocity.y>0){
+                    if(tempVelocity.y + this.position.y>= this.targetY){
+                        tempVelocity.y = 0;
+                        this.velocity.y = 0;
+                        this.position.y = this.targetY;
+                        this.targetY = null;
+                    }
+                } 
+                
+            }
             this.position.add(tempVelocity);
             if(this.siteObject){
                 this.position.x = this.originalPosition.x + this.siteObject.position.x;
@@ -176,13 +197,25 @@ GAME.SiteObject.prototype.movePosition = function(params) {
     }
 
 GAME.SiteObject.prototype.moveToLocation = function(params){
-    this.velocity.x = params.velocityX;
-    this.targetX = params.targetX;
-    if(this.targetX<this.position.x){
-        this.velocity.x*=-1;
-    } else if (this.targetX==this.position.x){
-        this.velocity.x =0;
-        this.targetX = null;
+    if(params.velocityX!=null){
+        this.velocity.x = params.velocityX;
+        this.targetX = params.targetX;
+        if(this.targetX<this.position.x){
+            this.velocity.x*=-1;
+        } else if (this.targetX==this.position.x){
+            this.velocity.x =0;
+            this.targetX = null;
+        }
+    }
+    if(params.velocityY!=null){
+        this.velocity.y = params.velocityY;
+        this.targetY = params.targetY;
+        if(this.targetY<this.position.y){
+            this.velocity.y*=-1;
+        } else if (this.targetY==this.position.y){
+            this.velocity.y =0;
+            this.targetY = null;
+        }
     }
 }
 GAME.SiteObject.prototype.setPosition = function(params) {
