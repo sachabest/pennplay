@@ -25,6 +25,7 @@ GAME.Player = function(params){
     this.temporaryPowerup = false;
     this.jumpLevel = 0;
     this.platformNumber = -1;
+    this.dropThrough = false;
     /*var plane = new THREE.PlaneGeometry(this.width,this.height);
     //this.material = new THREE.MeshPhongMaterial({color: 0xFFFFFF, map: GAME.Textures['player'].threeObj, emissive:0x080808, transparent:true, side:THREE.DoubleSide});
     this.material = new THREE.MeshPhongMaterial({color: 0xAA00FF, emissive:0x080808, transparent:true, side:THREE.DoubleSide});
@@ -168,7 +169,7 @@ GAME.Player.prototype.updatePosition = function(params) {
         };*/
         //this.mesh.material.color.setRGB(1, 1,1);
         this.takingDamage = false;
-        this.setPosition({ x:0, y:200, z:0 });
+        this.setPosition({ x:0, y:0, z:0 });
         scene.add(this);
         scene.add(light);
     }

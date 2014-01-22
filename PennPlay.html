@@ -71,10 +71,10 @@
 				document.body.appendChild( container );
                 
 				scene = new THREE.Scene();
-                scene.fog = new THREE.Fog( 0xFFFFFF, 5000,10000);
+                scene.fog = new THREE.Fog( 0xFFFFFF, 500,2500);
                 camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
                 camera.position.z = targetZ;
-                camera.position.y = 0;
+                camera.position.y = -100;
                 scene.add( camera );
                 light = new THREE.SpotLight( 0x000000);
                 light.position.z = 100;
@@ -103,7 +103,7 @@
                 
                 
                 //renderer 
-               renderer = new THREE.WebGLRenderer({ antialias: true});
+               renderer = new THREE.WebGLRenderer({ antialias: false});
 				renderer.setSize( window.innerWidth, window.innerHeight );
                 renderer.setClearColor( 0xffffff, 1 );
                 /*renderer.shadowMapEnabled = true;
@@ -134,6 +134,7 @@
                 document.addEventListener( 'mouseup', onDocumentMouseUp, true );
                 document.addEventListener( 'keydown', onkeydown, true );
                 document.addEventListener( 'keyup', onkeyup, true );
+                document.addEventListener( 'keypress', onkeypress, true )
 
                 
                 
@@ -205,30 +206,33 @@
 
 
             function onkeydown( event ) {
-                event.preventDefault();
+                //event.preventDefault();
                 //right
                 if (event.keyCode === 39) {
                     GAME.rightIsDown=true;
-                    if (!GAME.player.takingDamage){
-                        GAME.player.acceleration.x = 0;
-                        GAME.player.movePlayerRight({  speed:2});
-                    };
+                    GAME.leftIsDown=false;
                     GAME.keyUp = false;
                 }
 
                 //left
                 if (event.keyCode === 37) {
                     GAME.leftIsDown=true;
-                    if (!GAME.player.takingDamage){
-                        GAME.player.acceleration.x = 0;
-                        GAME.player.movePlayerLeft({  speed:2});
-                    };
+                    GAME.rightIsDown=false;
                     GAME.keyUp = false;
                 }
 
                 if (event.keyCode === 38) {
+                    GAME.upIsDown = true;
+                    GAME.keyUp = false;
+                }
+
+                if (event.keyCode === 40) {
+                    GAME.player.dropThrough = true;
+                }
+
+               /* if (event.keyCode === 38) {
                     if(GAME.player.position.z==GAME.playerPlane){
-                        GAME.player.shiftPlanes({speed:-4.5,jump:12});  
+                        //GAME.player.shiftPlanes({speed:-4.5,jump:12});  
                     }
                     //GAME.keyUp = false;
                 }
@@ -236,21 +240,34 @@
 
                 if (event.keyCode === 40) {
                     if(GAME.player.position.z==GAME.backPlane){
-                        GAME.player.shiftPlanes({speed:4.5,jump:12});  
+                        //GAME.player.shiftPlanes({speed:4.5,jump:12});  
                     }
                     //GAME.keyUp = false;
-                }
-
-
-                //space
-                if (event.keyCode === 32) {
-                    if (!GAME.player.takingDamage){
-                        GAME.player.acceleration.x = 0;
-                        GAME.player.jumpPlayer({  jump:GAME.player.jumpHeight});
-                        
-                    };
-                }
+                }*/
             }
+/*
+             function onkeypress( event ) {
+                //event.preventDefault();
+                //right
+                console.log(event.keyCode);
+                if (event.keyCode === 100) {
+                    GAME.rightIsDown=true;
+                    GAME.leftIsDown=false;
+                    GAME.keyUp = false;
+                }
+
+                //left
+                if (event.keyCode === 97) {
+                    GAME.leftIsDown=true;
+                    GAME.rightIsDown=false;
+                    GAME.keyUp = false;
+                }
+
+                if (event.keyCode === 119) {
+                    GAME.upIsDown = true;
+                    GAME.keyUp = false;
+                }
+            }*/
             function onkeyup( event ) {
                 event.preventDefault();
                 if (event.keyCode === 39) {
@@ -266,6 +283,17 @@
                     if(!GAME.rightIsDown&&!GAME.leftIsDown){
                         GAME.keyUp = true;
                     }
+                }
+
+                if (event.keyCode === 38) {
+                    GAME.upIsDown = false;
+                    if(!GAME.rightIsDown&&!GAME.leftIsDown){
+                        GAME.keyUp = true;
+                    }
+                }
+
+                if (event.keyCode === 40) {
+                    GAME.player.dropThrough = false;
                 }
             }
             
@@ -292,6 +320,22 @@
 
                     //if split into separate levels can have separete render cuntions
                     //GAME.currentLevel.render();
+                    if (GAME.rightIsDown) {
+                        GAME.player.acceleration.x = 0;
+                        GAME.player.movePlayerRight({  speed:4});
+                    }
+
+                    //left
+                    if (GAME.leftIsDown) {
+                        GAME.player.acceleration.x = 0;
+                        GAME.player.movePlayerLeft({  speed:4});
+                    }
+
+                    if (GAME.upIsDown) {
+                        GAME.player.acceleration.x = 0;
+                        GAME.player.jumpPlayer({  jump:GAME.player.jumpHeight});
+                        GAME.upIsDown = false;
+                    }
 
                     //set player to not intersected
                     GAME.player.intersected = false;
@@ -347,7 +391,7 @@
                 if(targetY < -300){
                     targetY = -300;
                 }
-                camera.position.y += (targetY - camera.position.y)*.01;
+                //camera.position.y += (targetY - camera.position.y)*.01;
 
                 targetX = GAME.player.position.x;
                 if(targetX > 300){
@@ -356,10 +400,10 @@
                 if(targetX < -300){
                     targetX = -300;
                 }
-                camera.position.x += (targetX - camera.position.x)*.01;
+                //camera.position.x += (targetX - camera.position.x)*.01;
 
 
-                camera.position.z += (GAME.player.position.z+1000 - camera.position.z)*.5
+                //camera.position.z += (GAME.player.position.z+1000 - camera.position.z)*.5
 
                 //render
 				renderer.render( scene, camera );
