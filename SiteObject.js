@@ -91,14 +91,14 @@ GAME.SiteObject.prototype.updatePosition = function() {
     	}*/
         //if(!this.locked){
             this.velocity.add(this.acceleration);
-            if(this.position.z+this.velocity.z <GAME.backPlane){
+            /*if(this.position.z+this.velocity.z <GAME.backPlane){
                 this.velocity.z = 0;
                 this.position.z = GAME.backPlane;
             }
             if(this.position.z+this.velocity.z >GAME.playerPlane){
                 this.velocity.z = 0;
                 this.position.z = GAME.playerPlane;
-            }
+            }*/
             var tempVelocity = new  THREE.Vector3(this.velocity.x,this.velocity.y,this.velocity.z);
             if(this.siteObject){
                 tempVelocity.x += this.siteObject.velocity.x;
