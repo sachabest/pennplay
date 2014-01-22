@@ -20,6 +20,9 @@ GAME.SiteObject = function( params ) {
     if (params.map) {
         this.material.map=params.map;
     }
+    if(params.opacity!=null){
+        this.material.opacity = params.opacity;
+    }
     //this.doubleSided=true;
     //this.position = new THREE.Vector3 ( params.x+ this.width/2, params.y+ this.height/2, params.z );
    

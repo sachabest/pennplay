@@ -23,7 +23,7 @@ init:function() {
     GAME.platforms = [];
 
     //Create player
-    GAME.player = new GAME.Player({ x:0, y:-150, z:0, health:100, lives:4, width:20, height:35,color:0x000000, velocityX:0, velocityY:0, pathLength:0,mass:20} );
+    GAME.player = new GAME.Player({ x:0, y:-150, z:0, health:100, lives:4, width:18, height:25,color:0x000000, velocityX:0, velocityY:0, pathLength:0,mass:20} );
     
     scene.add(GAME.player);
     
@@ -49,9 +49,9 @@ init:function() {
     GAME.platforms.push(GAME.gateWay);
     GAME.stages = new GAME.SiteObject({hidden:true, x:0, y:0, z:GAME.playerPlane, width:10, height:10,color:0x000000, velocityX:0, velocityY:0,mass:1});
     GAME.platforms.push(GAME.stages);
-    GAME.platforms.push(new GAME.Platform({hardBottom:true,siteObject:GAME.gateWay, x:-550, y:-130, z:GAME.playerPlane, width:1000, height:20,color:0x000000, velocityX:0, velocityY:0,mass:1}));
-    GAME.platforms.push(new GAME.Platform({hardBottom:true,siteObject:GAME.gateWay, x:550, y:-130, z:GAME.playerPlane, width:1000, height:20,color:0x000000, velocityX:0, velocityY:0,mass:1}));
-    GAME.platforms.push(new GAME.Platform({hardBottom:false,siteObject:GAME.gateWay, x:0, y:-130, z:GAME.playerPlane, width:100, height:20,color:0xBBBBBB, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({hardBottom:true,siteObject:GAME.gateWay, x:-560, y:-155, z:GAME.playerPlane, width:1000, height:20,color:0x000000, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({hardBottom:true,siteObject:GAME.gateWay, x:560, y:-155, z:GAME.playerPlane, width:1000, height:20,color:0x000000, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({hardBottom:false,siteObject:GAME.gateWay, x:0, y:-155, z:GAME.playerPlane, width:120, height:20,color:0xBBBBBB, velocityX:0, velocityY:0,mass:1}));
     GAME.platforms.push(new GAME.Platform({hardBottom:true,x:-500, y:0, z:GAME.playerPlane+.01, width:300, height:400,color:0x000000, velocityX:0, velocityY:0,mass:1}));
     GAME.platforms.push(new GAME.Platform({hardBottom:true,x:500, y:0, z:GAME.playerPlane+.01, width:300, height:400,color:0x000000, velocityX:0, velocityY:0,mass:1}));
     
@@ -101,32 +101,71 @@ init:function() {
     
 
     var currPlat = GAME.platforms.length;
+    var moveSpeed = 2;
+    var selecedColor = 0x0000FF;
     GAME.showTab1 = function(){
-        GAME.gateWay.moveToLocation({velocityX:10, targetX:-2*separation});
-        GAME.stages.moveToLocation({velocityX:30, targetX:20 * separation});
+        GAME.gateWay.moveToLocation({velocityX:moveSpeed, targetX:-2*separation});
+        GAME.stages.moveToLocation({velocityX:10*moveSpeed, targetX:20 * separation});
+        GAME.platforms[currPlat].material.opacity = 1;
+        GAME.platforms[currPlat+1].material.opacity = 0;
+        GAME.platforms[currPlat+2].material.opacity = 0;
+        GAME.platforms[currPlat+3].material.opacity = 0;
+        GAME.platforms[currPlat+4].material.opacity = 0;
+        //GAME.player.moveToLocation({velocityX:moveSpeed, targetX:-2*separation});
     }
 
     GAME.showTab2 = function(){
-        GAME.gateWay.moveToLocation({velocityX:10, targetX:-separation});
-        GAME.stages.moveToLocation({velocityX:30, targetX:10*separation});
+        GAME.gateWay.moveToLocation({velocityX:moveSpeed, targetX:-separation});
+        GAME.stages.moveToLocation({velocityX:10*moveSpeed, targetX:10*separation});
+        GAME.platforms[currPlat].material.opacity = 0;
+        GAME.platforms[currPlat+1].material.opacity = 1;
+        GAME.platforms[currPlat+2].material.opacity = 0;
+        GAME.platforms[currPlat+3].material.opacity = 0;
+        GAME.platforms[currPlat+4].material.opacity = 0;
+        //GAME.platforms[currPlat+3].material.color = new THREE.Color(selecedColor);
     }
 
 
     GAME.showTab3 = function(){
-        GAME.gateWay.moveToLocation({velocityX:10, targetX:0});
-        GAME.stages.moveToLocation({velocityX:30, targetX:0});
+        GAME.gateWay.moveToLocation({velocityX:moveSpeed, targetX:0});
+        GAME.stages.moveToLocation({velocityX:10*moveSpeed, targetX:0});
+        GAME.platforms[currPlat].material.opacity = 0;
+        GAME.platforms[currPlat+1].material.opacity = 0;
+        GAME.platforms[currPlat+2].material.opacity = 1;
+        GAME.platforms[currPlat+3].material.opacity = 0;
+        GAME.platforms[currPlat+4].material.opacity = 0;
+        //GAME.platforms[currPlat+4].material.color = new THREE.Color(selecedColor);
     }
 
     GAME.showTab4 = function(){
-        GAME.gateWay.moveToLocation({velocityX:10, targetX:separation});
-        GAME.stages.moveToLocation({velocityX:30, targetX:-10*separation});
+        GAME.gateWay.moveToLocation({velocityX:moveSpeed, targetX:separation});
+        GAME.stages.moveToLocation({velocityX:10*moveSpeed, targetX:-10*separation});
+        GAME.platforms[currPlat].material.opacity = 0;
+        GAME.platforms[currPlat+1].material.opacity = 0;
+        GAME.platforms[currPlat+2].material.opacity = 0;
+        GAME.platforms[currPlat+3].material.opacity = 1;
+        GAME.platforms[currPlat+4].material.opacity = 0;
+        //GAME.platforms[currPlat+5].material.color = new THREE.Color(selecedColor);
     }
 
 
     GAME.showTab5 = function(){
-        GAME.gateWay.moveToLocation({velocityX:10, targetX:2*separation});
-        GAME.stages.moveToLocation({velocityX:30, targetX:-20*separation});
+        GAME.gateWay.moveToLocation({velocityX:moveSpeed, targetX:2*separation});
+        GAME.stages.moveToLocation({velocityX:10*moveSpeed, targetX:-20*separation});
+        GAME.platforms[currPlat].material.opacity = 0;
+        GAME.platforms[currPlat+1].material.opacity = 0;
+        GAME.platforms[currPlat+2].material.opacity = 0;
+        GAME.platforms[currPlat+3].material.opacity = 0;
+        GAME.platforms[currPlat+4].material.opacity = 1;
+        //GAME.platforms[currPlat+6].material.color = new THREE.Color(selecedColor);
     }
+    //Highlights of tabs
+    var border = 3;
+    GAME.platforms.push(new GAME.Button({imaginary:true,opacity:0,x:-2*separation, y:-200, z:GAME.playerPlane-.1, width:separation - separation/10.0+border, height:10+border,color:selecedColor, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Button({imaginary:true,opacity:0,x:-separation, y:-200, z:GAME.playerPlane-.1, width:separation - separation/10.0+border, height:10+border,color:selecedColor, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Button({imaginary:true,opacity:0,x:0, y:-200, z:GAME.playerPlane-.1, width:separation - separation/10.0+border, height:10+border,color:selecedColor, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Button({imaginary:true,opacity:0,x:separation, y:-200, z:GAME.playerPlane-.1, width:separation - separation/10.0+border, height:10+border,color:selecedColor, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Button({imaginary:true,opacity:0,x:2*separation, y:-200, z:GAME.playerPlane-.1, width:separation - separation/10.0+border, height:10+border,color:selecedColor, velocityX:0, velocityY:0,mass:1}));
 
     //Create text of tabs
    /* GAME.platforms.push(new GAME.Platform({x:-300, y:-90, z:GAME.playerPlane, width:160, height:160,map:GAME.Textures['abouttext'].threeObj, color:0x000000, velocityX:0, velocityY:0,mass:10}));
