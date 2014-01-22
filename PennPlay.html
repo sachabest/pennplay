@@ -208,25 +208,27 @@
             function onkeydown( event ) {
                 //event.preventDefault();
                 //right
-                if (event.keyCode === 39) {
+
+                //console.log(event.keyCode);
+                if (event.keyCode === 68) {
                     GAME.rightIsDown=true;
                     GAME.leftIsDown=false;
                     GAME.keyUp = false;
                 }
 
                 //left
-                if (event.keyCode === 37) {
+                if (event.keyCode === 65) {
                     GAME.leftIsDown=true;
                     GAME.rightIsDown=false;
                     GAME.keyUp = false;
                 }
 
-                if (event.keyCode === 38) {
+                if (event.keyCode === 87) {
                     GAME.upIsDown = true;
                     GAME.keyUp = false;
                 }
 
-                if (event.keyCode === 40) {
+                if (event.keyCode === 83) {
                     GAME.player.dropThrough = true;
                 }
 
@@ -270,14 +272,14 @@
             }*/
             function onkeyup( event ) {
                 event.preventDefault();
-                if (event.keyCode === 39) {
+                if (event.keyCode ==68) {
 
                     GAME.rightIsDown=false;
                     if(!GAME.rightIsDown&&!GAME.leftIsDown){
                         GAME.keyUp = true;
                     }
                 }
-                 if (event.keyCode === 37) {
+                 if (event.keyCode === 65) {
 
                     GAME.leftIsDown=false;
                     if(!GAME.rightIsDown&&!GAME.leftIsDown){
@@ -285,14 +287,14 @@
                     }
                 }
 
-                if (event.keyCode === 38) {
+                if (event.keyCode === 87) {
                     GAME.upIsDown = false;
                     if(!GAME.rightIsDown&&!GAME.leftIsDown){
                         GAME.keyUp = true;
                     }
                 }
 
-                if (event.keyCode === 40) {
+                if (event.keyCode === 83) {
                     GAME.player.dropThrough = false;
                 }
             }
@@ -322,13 +324,13 @@
                     //GAME.currentLevel.render();
                     if (GAME.rightIsDown) {
                         GAME.player.acceleration.x = 0;
-                        GAME.player.movePlayerRight({  speed:4});
+                        GAME.player.movePlayerRight({  speed:GAME.player.horizontalSpeed});
                     }
 
                     //left
                     if (GAME.leftIsDown) {
                         GAME.player.acceleration.x = 0;
-                        GAME.player.movePlayerLeft({  speed:4});
+                        GAME.player.movePlayerLeft({  speed:GAME.player.horizontalSpeed});
                     }
 
                     if (GAME.upIsDown) {

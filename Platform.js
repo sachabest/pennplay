@@ -40,7 +40,8 @@ var interNum = params.interNum;
             if(GAME.keyUp){
                 GAME.friction({object1:GAME.player});
             }
-             if(this.trigger){//&&!this.alreadyTriggered){
+             if(this.trigger&&!this.alreadyTriggered){
+                console.log("TRIGGERED");
                 this.trigger();
                 this.alreadyTriggered = true;
             }
@@ -68,6 +69,9 @@ var interNum = params.interNum;
         }
         if(!GAME.player.intersected){
             GAME.player.acceleration.x = 0;
+        }
+        if(interNum!=1){
+            this.alreadyTriggered=false;
         }
     }
 }
