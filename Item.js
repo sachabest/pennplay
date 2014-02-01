@@ -4,23 +4,28 @@ var GAME = GAME || {};
 
 
 
-GAME.Platform = function(params){//(x, y, z, width, height, dWidth, dHeight, map, color, velocityX, velocityY, pathLength, front){
+GAME.Item = function(params){//(x, y, z, width, height, dWidth, dHeight, map, color, velocityX, velocityY, pathLength, front){
     GAME.SiteObject.call( this, params );
     this.number = GAME.platforms.length;
+    this.relativePosition = new THREE.Vector3(params.relX,params.relY,params.relZ);
     this.dX = 0;
     this.dY = 0;
 };
 
-GAME.Platform.prototype = GAME.clone(GAME.SiteObject.prototype);
-GAME.Platform.prototype.constructor = GAME.Platform;
-GAME.Platform.prototype.intersectPlayer = function(params) {
-var interNum = params.interNum;
+GAME.Item.prototype = GAME.clone(GAME.SiteObject.prototype);
+GAME.Item.prototype.constructor = GAME.Item;
+GAME.Item.prototype.intersectPlayer = function(params) {
+    var interNum = params.interNum;
+    if(interNum!=-1){
+        this.siteObject = GAME.player;
+        this.locked = true;
+    }
     /*if(interNum==0||interNum==2||interNum==3||interNum==4){
         GAME.collide({object1:GAME.player, object2:this});
 
         this.setBounds();
         GAME.player.setBounds();
-    }else*/ 
+    }else*/ /*
     if(!this.imaginary){
         if(interNum===1){
             GAME.player.intersected = true;
@@ -77,6 +82,6 @@ var interNum = params.interNum;
                 GAME.player.siteObject = null;
             }
         }
-    }
+    }*/
 }
     

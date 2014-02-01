@@ -44,6 +44,7 @@ this.once = true;
     this.path = ({ left:this.position.x -this.pathLength/2, top:this.position.y + this.height +this.pathLength/2, right:this.position.x + this.width+this.pathLength/2, bottom:this.position.y-this.pathLength/2 });
     this.held = false;
     this.trigger = params.trigger;
+    this.updateRule = params.updateRule;
     this.alreadyTriggered = false;
     this.targetX = null;
     this.targetY = null;
@@ -147,13 +148,17 @@ GAME.SiteObject.prototype.updatePosition = function() {
                 } 
                 
             }
+            //this.originalPosition.add(tempVelocity);
             this.position.add(tempVelocity);
-            if(this.siteObject){
-                this.position.x = this.originalPosition.x + this.siteObject.position.x;
-                this.position.y = this.originalPosition.y + this.siteObject.position.y;
-                this.position.z = this.originalPosition.z + this.siteObject.position.z;
+            if(this.siteObject&&this.locked){
+                this.position.x = this.relativePosition.x + this.siteObject.position.x;
+                this.position.y = this.relativePosition.y + this.siteObject.position.y;
+                this.position.z = this.relativePosition.z + this.siteObject.position.z;
             }
             this.setBounds();
+            if(this.updateRule){
+                this.updateRule({obj:this});
+            }
         //}
         /*this.bounds.left+= this.velocity.x;
         this.bounds.right+= this.velocity.x;

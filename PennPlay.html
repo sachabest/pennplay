@@ -24,6 +24,7 @@
         <script src="Decoration.js"></script>
         <script src="Platform.js"></script>
         <script src="Button.js"></script>
+        <script src="Item.js"></script>
         <script src="Level.js"></script>
         <script src="level1.js"></script>
         <script src="Preloader.js"></script>
@@ -71,7 +72,7 @@
 				document.body.appendChild( container );
                 
 				scene = new THREE.Scene();
-                scene.fog = new THREE.Fog( 0xFFFFFF, 500,2500);
+                //scene.fog = new THREE.Fog( 0xFFFFFF, 500,2500);
                 camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
                 camera.position.z = targetZ;
                 camera.position.y = -50;
@@ -103,7 +104,7 @@
                 
                 
                 //renderer 
-               renderer = new THREE.WebGLRenderer({ antialias: false});
+               renderer = new THREE.WebGLRenderer({ antialias: true});
 				renderer.setSize( window.innerWidth, window.innerHeight );
                 renderer.setClearColor( 0xffffff, 1 );
                 /*renderer.shadowMapEnabled = true;
@@ -180,7 +181,7 @@
                 for(var i =0; i <GAME.intersectsPlatforms.length; i++){
                     GAME.intersectsPlatforms[i].object.held = true;
                     count++;
-                    console.log(count);
+                    //console.log(count);
 
 
                 }
@@ -343,10 +344,10 @@
                     GAME.player.intersected = false;
 
                     //test plater intersections with other platforms (plus platform collisions if wanted)
-                    for(var i = 0; i<GAME.siteObjects.length; i++){
-                        for(var j = i+1; j<GAME.siteObjects.length; j++){
+                    for(var i = 0; i<GAME.platforms.length; i++){
+                        for(var j = i+1; j<GAME.platforms.length; j++){
                             if(i!=j){
-                                var interNum2 = GAME.intersects({ object1:GAME.siteObjects[i], object2:GAME.siteObjects[j] });
+                                var interNum2 = GAME.intersects({ object1:GAME.platforms[i], object2:GAME.platforms[j] });
 
                                 if(interNum2!=-1){//&&interNum!=4){
                                     //GAME.collide({object1:GAME.siteObjects[i],object2:GAME.siteObjects[j]})
@@ -355,9 +356,9 @@
                         }
 
                         //get direction of intersection
-                        var interNum = GAME.intersects({ object1:GAME.player, object2:GAME.siteObjects[i]});
+                        var interNum = GAME.intersects({ object1:GAME.player, object2:GAME.platforms[i]});
                         //Call appropriate behavior on site object
-                        GAME.siteObjects[i].intersectPlayer({interNum:interNum});
+                        GAME.platforms[i].intersectPlayer({interNum:interNum});
                     }
 
                     //Stop platforms from contiuing to move after letting go
@@ -371,10 +372,32 @@
                     }
 
                     //call update positions on all objects
+
+                    GAME.player.updatePosition();
+                    if(GAME.player.position.x >GAME.sideLocation-GAME.player.width/2.0-.010){
+                        GAME.player.position.x = -GAME.sideLocation+GAME.player.width/2.0+.02;
+                    } else if (GAME.player.position.x <-GAME.sideLocation+GAME.player.width/2.0+.01){
+                        GAME.player.position.x = GAME.sideLocation-GAME.player.width/2.0-.02;
+                    }
+                    targetY = GAME.player.position.y;
+                    if(targetY > 300){
+                        targetY = 300;
+                    }
+                    if(targetY < -300){
+                        targetY = -300;
+                    }
+                    //camera.position.y += (targetY - camera.position.y)*.01;
+
+                    targetX = GAME.player.position.x;
+                    if(targetX > 300){
+                        targetX = 300;
+                    }
+                    if(targetX < -300){
+                        targetX = -300;
+                    }
                     for(var i = 0; i<GAME.siteObjects.length; i++){
                         GAME.siteObjects[i].updatePosition();
                     }
-                    GAME.player.updatePosition();
                 }
 
 
@@ -386,22 +409,7 @@
                 
 
                 //update camera positions
-                targetY = GAME.player.position.y;
-                if(targetY > 300){
-                    targetY = 300;
-                }
-                if(targetY < -300){
-                    targetY = -300;
-                }
-                //camera.position.y += (targetY - camera.position.y)*.01;
-
-                targetX = GAME.player.position.x;
-                if(targetX > 300){
-                    targetX = 300;
-                }
-                if(targetX < -300){
-                    targetX = -300;
-                }
+          
                 //camera.position.x += (targetX - camera.position.x)*.01;
 
 
