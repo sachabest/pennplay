@@ -38,7 +38,7 @@
 			var container, stats, loader;
             
             //Scene variables
-			var camera, scene, renderer;
+			var camera, renderer;
             var targetZ = 800;
             var light;
             
@@ -71,21 +71,22 @@
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
                 
-				scene = new THREE.Scene();
-                //scene.fog = new THREE.Fog( 0xFFFFFF, 500,2500);
+				GAME.scene = new THREE.Scene();
+                //GAME.scene.fog = new THREE.Fog( 0xFFFFFF, 500,2500);
                 camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
                 camera.position.z = targetZ;
                 camera.position.y = -50;
-                scene.add( camera );
+                GAME.scene.add( camera );
                 light = new THREE.SpotLight( 0x000000);
                 light.position.z = 100;
                 light.target.x = .5;
                 light.target.y = 0;
                 light.target.z = -1;
-                //scene.add(light);
+                //GAME.scene.add(light);
                 
                 //Game variables
                 GAME.framerate = 60;
+                GAME.frame = 0;
                 GAME.keyUp = true;
                 GAME.moveCount = 0;
                 GAME.gameplayMode = 0;
@@ -276,6 +277,7 @@
                 if (event.keyCode ==68) {
 
                     GAME.rightIsDown=false;
+                    GAME.player.material.map=GAME.Textures['playerwalkcycleright1'].threeObj;
                     if(!GAME.rightIsDown&&!GAME.leftIsDown){
                         GAME.keyUp = true;
                     }
@@ -283,6 +285,7 @@
                  if (event.keyCode === 65) {
 
                     GAME.leftIsDown=false;
+                    GAME.player.material.map=GAME.Textures['playerwalkcycleleft1'].threeObj;
                     if(!GAME.rightIsDown&&!GAME.leftIsDown){
                         GAME.keyUp = true;
                     }
@@ -318,6 +321,7 @@
 			function render() {
 
                 if(GAME.loaded){
+                    GAME.frame+=1;
                     //gravity for player
                     GAME.applyGravity({ player:GAME.player});
 
@@ -338,6 +342,10 @@
                         GAME.player.acceleration.x = 0;
                         GAME.player.jumpPlayer({  jump:GAME.player.jumpHeight});
                         GAME.upIsDown = false;
+                        //GAME.player.material.map=GAME.Textures['playerwalkcycleright1'].threeObj;
+                    }
+                    if(!GAME.rightIsDown&&!GAME.leftIsDown){
+                        //GAME.player.material.map=GAME.Textures['playerwalkcycleright1'].threeObj;
                     }
 
                     //set player to not intersected
@@ -381,8 +389,21 @@
                         GAME.player.position.x = GAME.sideLocation-GAME.player.width/2.0-.02;
                     }
                     targetY = GAME.player.position.y;
-                    if(targetY > 300){
-                        targetY = 300;
+                    if(targetY > 150){
+                        targetY = 150;
+                        if(!GAME.moving){
+                            if(GAME.currentStage == 6){
+                                GAME.showTab5();
+                            } else if(GAME.currentStage == 5){
+                                GAME.showTab4();
+                            } else if(GAME.currentStage == 4){
+                                GAME.showTab3();
+                            } else if(GAME.currentStage == 3){
+                                GAME.showTab2();
+                            } else if(GAME.currentStage == 2){
+                                GAME.showTab1();
+                            }
+                        }
                     }
                     if(targetY < -300){
                         targetY = -300;
@@ -401,7 +422,7 @@
                     }
                 }
 
-
+                //console.log(GAME.player.position.y);
                 //targetZ = 700;
                 light.position.z = 2000;
                 
@@ -417,7 +438,7 @@
                 //camera.position.z += (GAME.player.position.z+1000 - camera.position.z)*.5
 
                 //render
-				renderer.render( scene, camera );
+				renderer.render( GAME.scene, camera );
                 
 			}
             

@@ -11,7 +11,8 @@ GAME.SiteObject = function( params ) {
     //MESH
     this.width = params.width;
     this.height = params.height;
-     var geometry1 = new THREE.PlaneGeometry(this.width, this.height)
+     var geometry1 = new THREE.PlaneGeometry(this.width, this.height);
+     //geometry1.needsUpdate = true;
     //}
     var material1 = new THREE.MeshBasicMaterial({color: params.color, transparent:true});
     THREE.Mesh.call(this,geometry1,material1);
@@ -83,6 +84,7 @@ this.once = true;
 GAME.SiteObject.prototype = GAME.clone(THREE.Mesh.prototype);
 GAME.SiteObject.prototype.constructor = GAME.SiteObject;
 GAME.SiteObject.prototype.updatePosition = function() {
+
 		/*if (this.pathLength!==0){
 	        if(this.bounds.right > this.path.right) {
 	            this.velocity.x = -1*Math.abs(this.velocity.x);
@@ -117,6 +119,7 @@ GAME.SiteObject.prototype.updatePosition = function() {
                         tempVelocity.x = 0;
                         this.velocity.x = 0;
                         this.position.x = this.targetX;
+                        GAME.moving = false;
                         this.targetX = null;
                     }
                 } else if (tempVelocity.x>0){
@@ -124,6 +127,7 @@ GAME.SiteObject.prototype.updatePosition = function() {
                         tempVelocity.x = 0;
                         this.velocity.x = 0;
                         this.position.x = this.targetX;
+                        GAME.moving = false;
                         this.targetX = null;
                     }
                 } 
@@ -137,6 +141,7 @@ GAME.SiteObject.prototype.updatePosition = function() {
                         tempVelocity.y = 0;
                         this.velocity.y = 0;
                         this.position.y = this.targetY;
+                        GAME.moving = false;
                         this.targetY = null;
                     }
                 } else if (tempVelocity.y>0){
@@ -144,6 +149,7 @@ GAME.SiteObject.prototype.updatePosition = function() {
                         tempVelocity.y = 0;
                         this.velocity.y = 0;
                         this.position.y = this.targetY;
+                        GAME.moving = false;
                         this.targetY = null;
                     }
                 } 
@@ -210,6 +216,8 @@ GAME.SiteObject.prototype.moveToLocation = function(params){
         if(this.targetX<this.position.x){
             this.velocity.x*=-1;
         } else if (this.targetX==this.position.x){
+
+            GAME.moving = false;
             this.velocity.x =0;
             this.targetX = null;
         }
@@ -220,6 +228,7 @@ GAME.SiteObject.prototype.moveToLocation = function(params){
         if(this.targetY<this.position.y){
             this.velocity.y*=-1;
         } else if (this.targetY==this.position.y){
+            GAME.moving = false;
             this.velocity.y =0;
             this.targetY = null;
         }

@@ -48,6 +48,15 @@ GAME.Player.prototype.movePlayerRight = function(params) {
             this.velocity.x =params.speed;
             //this.rotation.y = 0;
             this.impededLeft = false;
+        if(GAME.frame%40 == 0){
+            this.material.map=GAME.Textures['playerwalkcycleright1'].threeObj;
+        } else if(GAME.frame%40 == 10){
+            this.material.map=GAME.Textures['playerwalkcycleright2'].threeObj;
+        } else if(GAME.frame%40 == 20){
+            this.material.map=GAME.Textures['playerwalkcycleright1'].threeObj;
+        } else if(GAME.frame%40 == 30){
+            this.material.map=GAME.Textures['playerwalkcycleright4'].threeObj;
+        }
 
         this.setBounds();
         }
@@ -58,7 +67,15 @@ GAME.Player.prototype.movePlayerLeft = function(params) {
             this.velocity.x =-params.speed;
             //this.rotation.y = Math.PI;
             this.impededRight = false;
-
+        if(GAME.frame%40 == 0){
+            this.material.map=GAME.Textures['playerwalkcycleleft1'].threeObj;
+        } else if(GAME.frame%40 == 10){
+            this.material.map=GAME.Textures['playerwalkcycleleft2'].threeObj;
+        } else if(GAME.frame%40 == 20){
+            this.material.map=GAME.Textures['playerwalkcycleleft1'].threeObj;
+        } else if(GAME.frame%40 == 30){
+            this.material.map=GAME.Textures['playerwalkcycleleft4'].threeObj;
+        }
         this.setBounds();
         }
         //this.intersected = false;
@@ -71,7 +88,7 @@ GAME.Player.prototype.stopPlayer = function(params) {
     
 GAME.Player.prototype.jumpPlayer = function(params) {
         if(this.jumps<2){
-            this.velocity.y =params.jump;
+            this.velocity.y =this.jumpHeight;
             this.bounces = 0;
             this.jumps++;
             //this.intersected = false;

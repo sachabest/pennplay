@@ -10,15 +10,27 @@ GAME.Item = function(params){//(x, y, z, width, height, dWidth, dHeight, map, co
     this.relativePosition = new THREE.Vector3(params.relX,params.relY,params.relZ);
     this.dX = 0;
     this.dY = 0;
+    this.used = false;
 };
 
 GAME.Item.prototype = GAME.clone(GAME.SiteObject.prototype);
 GAME.Item.prototype.constructor = GAME.Item;
 GAME.Item.prototype.intersectPlayer = function(params) {
-    var interNum = params.interNum;
-    if(interNum!=-1){
-        this.siteObject = GAME.player;
-        this.locked = true;
+    if(!this.used){
+        var interNum = params.interNum;
+        if(interNum!=-1){
+            //this.siteObject = GAME.player;
+            //this.locked = true;
+            GAME.scene.remove(this);
+            GAME.score+=10;
+            /*GAME.scene.remove(GAME.player);
+        GAME.player = new GAME.Player({map:GAME.player.material.map,x:GAME.player.position.x, y:GAME.player.position.y, z:-.02, health:100, lives:4, width:GAME.player.width+5, height:GAME.player.height+5,color:0xFFFFFF, velocityX:GAME.player.velocity.x, velocityY:GAME.player.velocity.y, pathLength:0,mass:20} );
+        GAME.scene.add(GAME.player);*/
+            GAME.player.jumpHeight+=1;
+
+            GAME.player.setBounds();
+            this.used=true;
+        }
     }
     /*if(interNum==0||interNum==2||interNum==3||interNum==4){
         GAME.collide({object1:GAME.player, object2:this});

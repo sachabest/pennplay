@@ -5,7 +5,7 @@ var GAME = GAME || {};
 
 
 GAME.Textures = {
-    'logo' : {src:'Textures/Logo.png',threeObj:undefined},
+    /*'logo' : {src:'Textures/Logo.png',threeObj:undefined},
     'signup' : {src:'Textures/Signup.png',threeObj:undefined},
     'info' : {src:'Textures/info.png',threeObj:undefined},
     'about' : {src:'Textures/About.png',threeObj:undefined},
@@ -13,7 +13,7 @@ GAME.Textures = {
     'announcements' : {src:'Textures/Announcements.png',threeObj:undefined},
     'abouttext' : {src:'Textures/AboutText.png',threeObj:undefined},
     'contacttext' : {src:'Textures/ContactText.png',threeObj:undefined},
-    'announcementstext' : {src:'Textures/AnnouncementsText.png',threeObj:undefined},
+    'announcementstext' : {src:'Textures/AnnouncementsText.png',threeObj:undefined},*/
     /*'level0layer1' : {src:'Textures/Level0Layer1.png',threeObj:undefined},
     'level0layer2' : {src:'Textures/Level0Layer2.png',threeObj:undefined},
     'level0layer3' : {src:'Textures/Level0Layer3.png',threeObj:undefined},
@@ -50,6 +50,17 @@ GAME.Textures = {
     'planet1' : {src:'Textures/Planet1.png',threeObj:undefined},
     'planet2' : {src:'Textures/Planet2.png',threeObj:undefined},
     'sun' : {src:'Textures/Sun.png',threeObj:undefined},
+    'playerwalkcycleright1' : {src:'Textures/playerwalkcycleright1.png',threeObj:undefined},
+    'playerwalkcycleright2' : {src:'Textures/playerwalkcycleright2.png',threeObj:undefined},
+    'playerwalkcycleright4' : {src:'Textures/playerwalkcycleright4.png',threeObj:undefined},
+    'playerwalkcycleleft1' : {src:'Textures/playerwalkcycleleft1.png',threeObj:undefined},
+    'playerwalkcycleleft2' : {src:'Textures/playerwalkcycleleft2.png',threeObj:undefined},
+    'playerwalkcycleleft4' : {src:'Textures/playerwalkcycleleft4.png',threeObj:undefined},
+    'aboutus' : {src:'Textures/About Us.jpg',threeObj:undefined},
+    'resources' : {src:'Textures/Resources.jpg',threeObj:undefined},
+    'rules&faq' : {src:'Textures/Rules & Faq.jpg',threeObj:undefined},
+    'announcements' : {src:'Textures/Announcements.jpg',threeObj:undefined},
+    'sponsors' : {src:'Textures/Sponsors.jpg',threeObj:undefined},
 
     /*'level1layer1' : {src:'Textures/Level1Layer1.png',threeObj:undefined},
     'level1layer2' : {src:'Textures/Level1Layer2.png',threeObj:undefined},
