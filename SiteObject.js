@@ -36,6 +36,7 @@ this.once = true;
     this.acceleration = new THREE.Vector3(0,0,0);
     this.velocity = new THREE.Vector3(this.velocityX||0,this.velocityY|| 0, 0);
     this.mass = params.mass;
+    this.relativePosition = new THREE.Vector3(0,0,0);
     
     //PROPERTIES
     //this.bounds = ({ left:this.position.x, top:this.position.y+this.height, right:this.position.x+this.width, bottom:this.position.y});
@@ -148,9 +149,10 @@ GAME.SiteObject.prototype.updatePosition = function() {
                 } 
                 
             }
-            //this.originalPosition.add(tempVelocity);
+            this.originalPosition.add(tempVelocity);
             this.position.add(tempVelocity);
             if(this.siteObject&&this.locked){
+                this.velocity = this.siteObject.velocity;
                 this.position.x = this.relativePosition.x + this.siteObject.position.x;
                 this.position.y = this.relativePosition.y + this.siteObject.position.y;
                 this.position.z = this.relativePosition.z + this.siteObject.position.z;
