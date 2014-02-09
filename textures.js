@@ -61,6 +61,9 @@ GAME.Textures = {
     'rules&faq' : {src:'Textures/Rules & Faq.jpg',threeObj:undefined},
     'announcements' : {src:'Textures/Announcements.jpg',threeObj:undefined},
     'sponsors' : {src:'Textures/Sponsors.jpg',threeObj:undefined},
+    'home' : {src:'Textures/Home.jpg',threeObj:undefined},
+    'events' : {src:'Textures/Events.jpg',threeObj:undefined},
+    'schedule' : {src:'Textures/Schedule.jpg',threeObj:undefined},
 
     /*'level1layer1' : {src:'Textures/Level1Layer1.png',threeObj:undefined},
     'level1layer2' : {src:'Textures/Level1Layer2.png',threeObj:undefined},
