@@ -43,7 +43,7 @@ var interNum = params.interNum;
             }
              if(this.trigger&&!this.alreadyTriggered){
                 //console.log("TRIGGERED");
-                this.trigger();
+                this.trigger({inGame:true});
                 this.alreadyTriggered = true;
             }
         } else if(this.hardBottom&&interNum===0){

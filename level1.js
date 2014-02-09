@@ -199,119 +199,131 @@ init:function() {
     var moveSpeed = 6;
     var selecedColor = 0xFFFFFF;
     GAME.currentStage = 3;
-    GAME.showTab1 = function(){
-        GAME.moving = true;
-        var speedAdjust = Math.abs(GAME.currentStage - 1);
-        if (speedAdjust == 0){
-            speedAdjust=1;
+    GAME.showTab1 = function(params){
+        if(params.inGame){
+            GAME.moving = true;
+            var speedAdjust = Math.abs(GAME.currentStage - 1);
+            if (speedAdjust == 0){
+                speedAdjust=1;
+            }
+            GAME.gateWay.moveToLocation({velocityX:speedAdjust*moveSpeed, targetX:-2.5*1.25*xSeparation});
+            GAME.stages.moveToLocation({velocityY:(speedAdjust*ySeparation/(1.25*xSeparation))*moveSpeed, targetY:-2*ySeparation});
+            GAME.platforms[currPlat].material.opacity = 1;
+            GAME.platforms[currPlat+1].material.opacity = 0;
+            GAME.platforms[currPlat+2].material.opacity = 0;
+            GAME.platforms[currPlat+3].material.opacity = 0;
+            GAME.platforms[currPlat+4].material.opacity = 0;
+            GAME.platforms[currPlat+5].material.opacity = 0;
+           // console.log(Math.abs(GAME.currentStage - 1));
+            GAME.currentStage = 1;
+            //GAME.player.moveToLocation({velocityX:moveSpeed, targetX:-2*xSeparation});
         }
-        GAME.gateWay.moveToLocation({velocityX:speedAdjust*moveSpeed, targetX:-2.5*1.25*xSeparation});
-        GAME.stages.moveToLocation({velocityY:(speedAdjust*ySeparation/(1.25*xSeparation))*moveSpeed, targetY:-2*ySeparation});
-        GAME.platforms[currPlat].material.opacity = 1;
-        GAME.platforms[currPlat+1].material.opacity = 0;
-        GAME.platforms[currPlat+2].material.opacity = 0;
-        GAME.platforms[currPlat+3].material.opacity = 0;
-        GAME.platforms[currPlat+4].material.opacity = 0;
-        GAME.platforms[currPlat+5].material.opacity = 0;
-       // console.log(Math.abs(GAME.currentStage - 1));
-        GAME.currentStage = 1;
-        //GAME.player.moveToLocation({velocityX:moveSpeed, targetX:-2*xSeparation});
     }
 
-    GAME.showTab2 = function(){
-        GAME.moving = true;
-        var speedAdjust = Math.abs(GAME.currentStage - 2);
-        if (speedAdjust == 0){
-            speedAdjust=1;
+    GAME.showTab2 = function(params){
+        if(params.inGame){
+            GAME.moving = true;
+            var speedAdjust = Math.abs(GAME.currentStage - 2);
+            if (speedAdjust == 0){
+                speedAdjust=1;
+            }
+            GAME.gateWay.moveToLocation({velocityX:speedAdjust*moveSpeed, targetX:-1.5*1.25*xSeparation});
+            GAME.stages.moveToLocation({velocityY:(speedAdjust*ySeparation/(1.25*xSeparation))*moveSpeed, targetY:-ySeparation});
+            GAME.platforms[currPlat].material.opacity = 0;
+            GAME.platforms[currPlat+1].material.opacity = 1;
+            GAME.platforms[currPlat+2].material.opacity = 0;
+            GAME.platforms[currPlat+3].material.opacity = 0;
+            GAME.platforms[currPlat+4].material.opacity = 0;
+            GAME.platforms[currPlat+5].material.opacity = 0;
+            //console.log(Math.abs(GAME.currentStage - 2));
+            GAME.currentStage = 2;
+            //GAME.platforms[currPlat+3].material.color = new THREE.Color(selecedColor);
         }
-        GAME.gateWay.moveToLocation({velocityX:speedAdjust*moveSpeed, targetX:-1.5*1.25*xSeparation});
-        GAME.stages.moveToLocation({velocityY:(speedAdjust*ySeparation/(1.25*xSeparation))*moveSpeed, targetY:-ySeparation});
-        GAME.platforms[currPlat].material.opacity = 0;
-        GAME.platforms[currPlat+1].material.opacity = 1;
-        GAME.platforms[currPlat+2].material.opacity = 0;
-        GAME.platforms[currPlat+3].material.opacity = 0;
-        GAME.platforms[currPlat+4].material.opacity = 0;
-        GAME.platforms[currPlat+5].material.opacity = 0;
-        //console.log(Math.abs(GAME.currentStage - 2));
-        GAME.currentStage = 2;
-        //GAME.platforms[currPlat+3].material.color = new THREE.Color(selecedColor);
-    }
-
-
-    GAME.showTab3 = function(){
-        GAME.moving = true;
-        var speedAdjust = Math.abs(GAME.currentStage - 3);
-        if (speedAdjust == 0){
-            speedAdjust=1;
-        }
-        GAME.gateWay.moveToLocation({velocityX:speedAdjust*moveSpeed, targetX:-.5*1.25*xSeparation});
-        GAME.stages.moveToLocation({velocityY:(speedAdjust*ySeparation/(1.25*xSeparation))*moveSpeed, targetY:0});
-        GAME.platforms[currPlat].material.opacity = 0;
-        GAME.platforms[currPlat+1].material.opacity = 0;
-        GAME.platforms[currPlat+2].material.opacity = 1;
-        GAME.platforms[currPlat+3].material.opacity = 0;
-        GAME.platforms[currPlat+4].material.opacity = 0;
-        GAME.platforms[currPlat+5].material.opacity = 0;
-        //console.log(Math.abs(GAME.currentStage - 3));
-        GAME.currentStage = 3;
-        //GAME.platforms[currPlat+4].material.color = new THREE.Color(selecedColor);
-    }
-
-    GAME.showTab4 = function(){
-        GAME.moving = true;
-        var speedAdjust = Math.abs(GAME.currentStage - 4);
-        if (speedAdjust == 0){
-            speedAdjust=1;
-        }
-        GAME.gateWay.moveToLocation({velocityX:speedAdjust*moveSpeed, targetX:.5*1.25*xSeparation});
-        GAME.stages.moveToLocation({velocityY:(speedAdjust*ySeparation/(1.25*xSeparation))*moveSpeed, targetY:ySeparation});
-        GAME.platforms[currPlat].material.opacity = 0;
-        GAME.platforms[currPlat+1].material.opacity = 0;
-        GAME.platforms[currPlat+2].material.opacity = 0;
-        GAME.platforms[currPlat+3].material.opacity = 1;
-        GAME.platforms[currPlat+4].material.opacity = 0;
-        GAME.platforms[currPlat+5].material.opacity = 0;
-        //console.log(Math.abs(GAME.currentStage - 4));
-        GAME.currentStage = 4;
-        //GAME.platforms[currPlat+5].material.color = new THREE.Color(selecedColor);
     }
 
 
-    GAME.showTab5 = function(){
-        GAME.moving = true;
-        var speedAdjust = Math.abs(GAME.currentStage - 5);
-        if (speedAdjust == 0){
-            speedAdjust=1;
+    GAME.showTab3 = function(params){
+        if(params.inGame){
+            GAME.moving = true;
+            var speedAdjust = Math.abs(GAME.currentStage - 3);
+            if (speedAdjust == 0){
+                speedAdjust=1;
+            }
+            GAME.gateWay.moveToLocation({velocityX:speedAdjust*moveSpeed, targetX:-.5*1.25*xSeparation});
+            GAME.stages.moveToLocation({velocityY:(speedAdjust*ySeparation/(1.25*xSeparation))*moveSpeed, targetY:0});
+            GAME.platforms[currPlat].material.opacity = 0;
+            GAME.platforms[currPlat+1].material.opacity = 0;
+            GAME.platforms[currPlat+2].material.opacity = 1;
+            GAME.platforms[currPlat+3].material.opacity = 0;
+            GAME.platforms[currPlat+4].material.opacity = 0;
+            GAME.platforms[currPlat+5].material.opacity = 0;
+            //console.log(Math.abs(GAME.currentStage - 3));
+            GAME.currentStage = 3;
+            //GAME.platforms[currPlat+4].material.color = new THREE.Color(selecedColor);
         }
-        GAME.gateWay.moveToLocation({velocityX:speedAdjust*moveSpeed, targetX:1.5*1.25*xSeparation});
-        GAME.stages.moveToLocation({velocityY:(speedAdjust*ySeparation/(1.25*xSeparation))*moveSpeed, targetY:2*ySeparation});
-        GAME.platforms[currPlat].material.opacity = 0;
-        GAME.platforms[currPlat+1].material.opacity = 0;
-        GAME.platforms[currPlat+2].material.opacity = 0;
-        GAME.platforms[currPlat+3].material.opacity = 0;
-        GAME.platforms[currPlat+4].material.opacity = 1;
-        GAME.platforms[currPlat+5].material.opacity = 0;
-        //console.log(Math.abs(GAME.currentStage - 5));
-        GAME.currentStage = 5;
-        //GAME.platforms[currPlat+6].material.color = new THREE.Color(selecedColor);
     }
-    GAME.showTab6 = function(){
-        GAME.moving = true;
-        var speedAdjust = Math.abs(GAME.currentStage - 6);
-        if (speedAdjust == 0){
-            speedAdjust=1;
+
+    GAME.showTab4 = function(params){
+        if(params.inGame){
+            GAME.moving = true;
+            var speedAdjust = Math.abs(GAME.currentStage - 4);
+            if (speedAdjust == 0){
+                speedAdjust=1;
+            }
+            GAME.gateWay.moveToLocation({velocityX:speedAdjust*moveSpeed, targetX:.5*1.25*xSeparation});
+            GAME.stages.moveToLocation({velocityY:(speedAdjust*ySeparation/(1.25*xSeparation))*moveSpeed, targetY:ySeparation});
+            GAME.platforms[currPlat].material.opacity = 0;
+            GAME.platforms[currPlat+1].material.opacity = 0;
+            GAME.platforms[currPlat+2].material.opacity = 0;
+            GAME.platforms[currPlat+3].material.opacity = 1;
+            GAME.platforms[currPlat+4].material.opacity = 0;
+            GAME.platforms[currPlat+5].material.opacity = 0;
+            //console.log(Math.abs(GAME.currentStage - 4));
+            GAME.currentStage = 4;
+            //GAME.platforms[currPlat+5].material.color = new THREE.Color(selecedColor);
         }
-        GAME.gateWay.moveToLocation({velocityX:speedAdjust*moveSpeed, targetX:2.5*1.25*xSeparation});
-        GAME.stages.moveToLocation({velocityY:(speedAdjust*ySeparation/(1.25*xSeparation))*moveSpeed, targetY:3*ySeparation});
-        GAME.platforms[currPlat].material.opacity = 0;
-        GAME.platforms[currPlat+1].material.opacity = 0;
-        GAME.platforms[currPlat+2].material.opacity = 0;
-        GAME.platforms[currPlat+3].material.opacity = 0;
-        GAME.platforms[currPlat+4].material.opacity = 0;
-        GAME.platforms[currPlat+5].material.opacity = 1;
-        //console.log(Math.abs(GAME.currentStage - 5));
-        GAME.currentStage = 6;
-        //GAME.platforms[currPlat+6].material.color = new THREE.Color(selecedColor);
+    }
+
+
+    GAME.showTab5 = function(params){
+        if(params.inGame){
+            GAME.moving = true;
+            var speedAdjust = Math.abs(GAME.currentStage - 5);
+            if (speedAdjust == 0){
+                speedAdjust=1;
+            }
+            GAME.gateWay.moveToLocation({velocityX:speedAdjust*moveSpeed, targetX:1.5*1.25*xSeparation});
+            GAME.stages.moveToLocation({velocityY:(speedAdjust*ySeparation/(1.25*xSeparation))*moveSpeed, targetY:2*ySeparation});
+            GAME.platforms[currPlat].material.opacity = 0;
+            GAME.platforms[currPlat+1].material.opacity = 0;
+            GAME.platforms[currPlat+2].material.opacity = 0;
+            GAME.platforms[currPlat+3].material.opacity = 0;
+            GAME.platforms[currPlat+4].material.opacity = 1;
+            GAME.platforms[currPlat+5].material.opacity = 0;
+            //console.log(Math.abs(GAME.currentStage - 5));
+            GAME.currentStage = 5;
+            //GAME.platforms[currPlat+6].material.color = new THREE.Color(selecedColor);
+        }
+    }
+    GAME.showTab6 = function(params){
+        if(params.inGame){
+            GAME.moving = true;
+            var speedAdjust = Math.abs(GAME.currentStage - 6);
+            if (speedAdjust == 0){
+                speedAdjust=1;
+            }
+            GAME.gateWay.moveToLocation({velocityX:speedAdjust*moveSpeed, targetX:2.5*1.25*xSeparation});
+            GAME.stages.moveToLocation({velocityY:(speedAdjust*ySeparation/(1.25*xSeparation))*moveSpeed, targetY:3*ySeparation});
+            GAME.platforms[currPlat].material.opacity = 0;
+            GAME.platforms[currPlat+1].material.opacity = 0;
+            GAME.platforms[currPlat+2].material.opacity = 0;
+            GAME.platforms[currPlat+3].material.opacity = 0;
+            GAME.platforms[currPlat+4].material.opacity = 0;
+            GAME.platforms[currPlat+5].material.opacity = 1;
+            //console.log(Math.abs(GAME.currentStage - 5));
+            GAME.currentStage = 6;
+            //GAME.platforms[currPlat+6].material.color = new THREE.Color(selecedColor);
+        }
     }
     //Highlights of tabs
     var border = 3;

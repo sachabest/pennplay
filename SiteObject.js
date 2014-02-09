@@ -245,7 +245,7 @@ GAME.SiteObject.prototype.setPosition = function(params) {
     GAME.SiteObject.prototype.clicked = function() {
         
         if(this.trigger){//&&!this.alreadyTriggered){
-            this.trigger();
+            this.trigger({inGame:true});
             this.alreadyTriggered = true;
         }
         /*if(this.siteObject){
