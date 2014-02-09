@@ -23,10 +23,11 @@ GAME.Item.prototype.intersectPlayer = function(params) {
             //this.locked = true;
             GAME.scene.remove(this);
             GAME.score+=10;
-            /*GAME.scene.remove(GAME.player);
+            var oldHeight = GAME.player.jumpHeight
+            GAME.scene.remove(GAME.player);
         GAME.player = new GAME.Player({map:GAME.player.material.map,x:GAME.player.position.x, y:GAME.player.position.y, z:-.02, health:100, lives:4, width:GAME.player.width+5, height:GAME.player.height+5,color:0xFFFFFF, velocityX:GAME.player.velocity.x, velocityY:GAME.player.velocity.y, pathLength:0,mass:20} );
-        GAME.scene.add(GAME.player);*/
-            GAME.player.jumpHeight+=1;
+        GAME.scene.add(GAME.player);
+            GAME.player.jumpHeight=oldHeight+1;
 
             GAME.player.setBounds();
             this.used=true;
