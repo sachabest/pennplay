@@ -37,7 +37,11 @@ this.once = true;
     this.acceleration = new THREE.Vector3(0,0,0);
     this.velocity = new THREE.Vector3(this.velocityX||0,this.velocityY|| 0, 0);
     this.mass = params.mass;
-    this.relativePosition = new THREE.Vector3(0,0,0);
+    if(params.relX){
+        this.relativePosition = new THREE.Vector3(params.relX,params.relY,params.relZ);
+    } else {
+        this.relativePosition = new THREE.Vector3(0,0,0);
+    }
     
     //PROPERTIES
     //this.bounds = ({ left:this.position.x, top:this.position.y+this.height, right:this.position.x+this.width, bottom:this.position.y});
@@ -63,10 +67,18 @@ this.once = true;
     this.locked = false;
     this.siteObject = params.siteObject;
     if(this.siteObject) {
-        this.position.set(this.siteObject.position.x+ params.x, 
+
+    /*this.locked = true;
+    if(!params.relX){
+        this.relativePosition = new THREE.Vector3 ( params.x, params.y, params.z );
+    }*/
+        /*this.positiond.set(this.siteObject.position.x+ params.x, 
                           this.siteObject.position.y+params.y,
-                          this.siteObject.position.z + params.z );
+                          this.siteObject.position.z + params.z );*/
         if(params.locked){
+            if(!params.relX){
+                this.relativePosition = new THREE.Vector3 ( params.x, params.y, params.z );
+            }
             this.locked = true;
             //this.position = this.siteObject.position;
         }
@@ -244,10 +256,11 @@ GAME.SiteObject.prototype.setPosition = function(params) {
 
     GAME.SiteObject.prototype.clicked = function() {
         
-        if(this.trigger){//&&!this.alreadyTriggered){
-            this.trigger({inGame:true});
-            this.alreadyTriggered = true;
-        }
+        if(this.trigger&&!this.alreadyTriggered){
+                //console.log("TRIGGERED");
+                this.trigger({inGame:true});
+                this.alreadyTriggered = true;
+            }
         /*if(this.siteObject){
             console.log("HELLOO");
             if(this.siteObject.trigger){//&&!this.alreadyTriggered){

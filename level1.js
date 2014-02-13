@@ -23,7 +23,7 @@ init:function() {
     GAME.platforms = [];
 
     //Create player
-    GAME.player = new GAME.Player({map:GAME.Textures['playerwalkcycleright1'].threeObj,x:0, y:-150, z:-.02, health:100, lives:4, width:32, height:50,color:0xFFFFFF, velocityX:0, velocityY:0, pathLength:0,mass:20} );
+    GAME.player = new GAME.Player({map:GAME.Textures['playerwalkcycleright1'].threeObj,x:0, y:-150, z:.1, health:100, lives:4, width:32, height:50,color:0xFFFFFF, velocityX:0, velocityY:0, pathLength:0,mass:20} );
     GAME.scene.add(GAME.player);
 
     GAME.score = 0;
@@ -78,12 +78,18 @@ init:function() {
 
     //Sponsors
     //GAME.platforms.push(new GAME.Button({hardBottom:false,siteObject:GAME.stages,x:2*xSeparation, y:startingHeight+2*ySeparation, z:GAME.playerPlane-.02, width:290, height:20,color:gateColor, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({siteObject:GAME.stages,x:0, y:startingHeight+2.5*ySeparation, z:-1500, width:25*xSeparation, height:3*ySeparation,color:0x8B31B4, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['planet1'].threeObj,siteObject:GAME.stages,x:-1500, y:startingHeight+2*ySeparation+200, z:-1000, width:500, height:500,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['planet2'].threeObj,siteObject:GAME.stages,x:-400, y:startingHeight+2*ySeparation+80, z:-1199, width:400, height:400,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['level2back'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight+2*ySeparation, z:-1400, width:2.5*1920, height:2.5*540,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,siteObject:GAME.stages,x:0, y:startingHeight+2.5*ySeparation, z:-1500, width:25*xSeparation, height:3*ySeparation,color:0x8B31B4, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['planet1'].threeObj,siteObject:GAME.stages,x:-1500, y:startingHeight+2*ySeparation+200, z:-1000, width:500, height:500,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({relX:-660,relY:startingHeight+2.0*ySeparation-30,relZ:-1,locked:true,hidden:false,hardBottom:false,siteObject:GAME.stages,x:-660, y:startingHeight+2*ySeparation-30, z:-1, width:175, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
+    GAME.platforms.push(new GAME.Item({siteObject:GAME.stages,x:-660, y:startingHeight+2*ySeparation+50, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    
+    GAME.platforms.push(new GAME.Platform({relX:-170,relY:startingHeight+2.0*ySeparation-65,relZ:-1,locked:true,hidden:false,hardBottom:false,siteObject:GAME.stages,x:-170, y:startingHeight+2*ySeparation-65, z:-1, width:80, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
+    GAME.platforms.push(new GAME.Item({siteObject:GAME.stages,x:-170, y:startingHeight+2*ySeparation, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['planet2'].threeObj,siteObject:GAME.stages,x:-400, y:startingHeight+2*ySeparation+80, z:-1199, width:400, height:400,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['level2back'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight+2*ySeparation, z:-1400, width:2.5*1920, height:2.5*540,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
 
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['1-2transition'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight+1.5*ySeparation, z:-760, width:2.35*1920, height:2.35*540,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['1-2transition'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight+1.5*ySeparation, z:-760, width:2.35*1920, height:2.35*540,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
     
     //Events
     GAME.cloudUpdateRule = function(params){
@@ -102,22 +108,27 @@ init:function() {
     var randomSideLength = 300.0;
     GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['cloud1'].threeObj,opacity:.9,updateRule:GAME.cloudUpdateRule, hardBottom:false,siteObject:GAME.stages,x:randomXRange*Math.random()-randomXRange/2.0, y:startingHeight-100+ySeparation, z:GAME.playerPlane-.03, width:randomSideLength*Math.random()+randomSideLength, height:randomSideLength*Math.random()+randomSideLength,color:0xFFFFFF, velocityX:1+2*Math.random(), velocityY:0,mass:1}));
     GAME.platforms.push(new GAME.Platform({locked:true,hidden:true,hardBottom:false,siteObject:GAME.siteObjects[GAME.siteObjects.length-1],x:0, y:-30, z:0, width:GAME.siteObjects[GAME.siteObjects.length-1].width-150, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
-    
+    GAME.platforms.push(new GAME.Item({locked:true,siteObject:GAME.platforms[GAME.platforms.length-1],x:0, y:100, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+
     GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['cloud2'].threeObj,opacity:.9,updateRule:GAME.cloudUpdateRule, hardBottom:false,siteObject:GAME.stages,x:randomXRange*Math.random()-randomXRange/2.0, y:startingHeight-75+ySeparation, z:GAME.playerPlane-.03, width:randomSideLength*Math.random()+randomSideLength, height:randomSideLength*Math.random()+randomSideLength,color:0xFFFFFF, velocityX:1+2*Math.random(), velocityY:0,mass:1}));
     GAME.platforms.push(new GAME.Platform({locked:true,hidden:true,hardBottom:false,siteObject:GAME.siteObjects[GAME.siteObjects.length-1],x:0, y:-30, z:0, width:GAME.siteObjects[GAME.siteObjects.length-1].width-150, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
-   
+    GAME.platforms.push(new GAME.Item({locked:true,siteObject:GAME.platforms[GAME.platforms.length-1],x:0, y:100, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+ 
     GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['cloud3'].threeObj,opacity:.9,updateRule:GAME.cloudUpdateRule, hardBottom:false,siteObject:GAME.stages,x:randomXRange*Math.random()-randomXRange/2.0, y:startingHeight-50+ySeparation, z:GAME.playerPlane-.03, width:randomSideLength*Math.random()+randomSideLength, height:randomSideLength*Math.random()+randomSideLength,color:0xFFFFFF, velocityX:1+2*Math.random(), velocityY:0,mass:1}));
     GAME.platforms.push(new GAME.Platform({locked:true,hidden:true,hardBottom:false,siteObject:GAME.siteObjects[GAME.siteObjects.length-1],x:0, y:-30, z:0, width:GAME.siteObjects[GAME.siteObjects.length-1].width-150, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
-   
+    GAME.platforms.push(new GAME.Item({locked:true,siteObject:GAME.platforms[GAME.platforms.length-1],x:0, y:100, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+
     GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['cloud4'].threeObj,opacity:.9,updateRule:GAME.cloudUpdateRule, hardBottom:false,siteObject:GAME.stages,x:randomXRange*Math.random()-randomXRange/2.0, y:startingHeight-25+ySeparation, z:GAME.playerPlane-.03, width:randomSideLength*Math.random()+randomSideLength, height:randomSideLength*Math.random()+randomSideLength,color:0xFFFFFF, velocityX:1+2*Math.random(), velocityY:0,mass:1}));
     GAME.platforms.push(new GAME.Platform({locked:true,hidden:true,hardBottom:false,siteObject:GAME.siteObjects[GAME.siteObjects.length-1],x:0, y:-30, z:0, width:GAME.siteObjects[GAME.siteObjects.length-1].width-150, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
-   
+    GAME.platforms.push(new GAME.Item({locked:true,siteObject:GAME.platforms[GAME.platforms.length-1],x:0, y:100, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+
     GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['cloud5'].threeObj,opacity:.9,updateRule:GAME.cloudUpdateRule, hardBottom:false,siteObject:GAME.stages,x:randomXRange*Math.random()-randomXRange/2.0, y:startingHeight+ySeparation, z:GAME.playerPlane-.03, width:randomSideLength*Math.random()+randomSideLength, height:randomSideLength*Math.random()+randomSideLength,color:0xFFFFFF, velocityX:1+2*Math.random(), velocityY:0,mass:1}));
     GAME.platforms.push(new GAME.Platform({locked:true,hidden:true,hardBottom:false,siteObject:GAME.siteObjects[GAME.siteObjects.length-1],x:0, y:-30, z:0, width:GAME.siteObjects[GAME.siteObjects.length-1].width-150, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
-    
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['sun'].threeObj,siteObject:GAME.stages,x:800, y:startingHeight+ySeparation, z:-750, width:400, height:400,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['bird1'].threeObj,siteObject:GAME.stages,x:-800, y:startingHeight+ySeparation+50, z:-300, width:150, height:150,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['bird2'].threeObj,siteObject:GAME.stages,x:-550, y:startingHeight+ySeparation-100, z:-300, width:100, height:100,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Item({locked:true,siteObject:GAME.platforms[GAME.platforms.length-1],x:0, y:100, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['sun'].threeObj,siteObject:GAME.stages,x:800, y:startingHeight+ySeparation, z:-750, width:400, height:400,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['bird1'].threeObj,siteObject:GAME.stages,x:-800, y:startingHeight+ySeparation+50, z:-300, width:150, height:150,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['bird2'].threeObj,siteObject:GAME.stages,x:-550, y:startingHeight+ySeparation-100, z:-300, width:100, height:100,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
 
     /*
     GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['cloud2'].threeObj,opacity:.9,updateRule:GAME.cloudUpdateRule, hardBottom:false,siteObject:GAME.stages,x:randomXRange*Math.random()-randomXRange/2.0, y:startingHeight+randomYRange*Math.random()-randomYRange/1.0+ySeparation, z:GAME.playerPlane-.03, width:randomSideLength*Math.random()+randomSideLength, height:randomSideLength*Math.random()+randomSideLength,color:0xFFFFFF, velocityX:1+2*Math.random(), velocityY:0,mass:1}));
@@ -126,57 +137,82 @@ init:function() {
     GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['cloud5'].threeObj,opacity:.9,updateRule:GAME.cloudUpdateRule, hardBottom:false,siteObject:GAME.stages,x:randomXRange*Math.random()-randomXRange/2.0, y:startingHeight+randomYRange*Math.random()-randomYRange/1.0+ySeparation, z:GAME.playerPlane-.03, width:randomSideLength*Math.random()+randomSideLength, height:randomSideLength*Math.random()+randomSideLength,color:0xFFFFFF, velocityX:1+2*Math.random(), velocityY:0,mass:1}));
     *///Home
     //GAME.platforms.push(new GAME.Button({hardBottom:false,siteObject:GAME.stages,x:0, y:startingHeight-150, z:GAME.playerPlane-.02, width:290, height:20,color:gateColor, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({siteObject:GAME.stages,x:0, y:startingHeight, z:-randomZRange-2, width:14.6*xSeparation, height:ySeparation,color:0x2ECADD, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['bush3'].threeObj,siteObject:GAME.stages,x:1300, y:startingHeight+70, z:-300, width:700, height:700,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['cloud3'].threeObj,siteObject:GAME.stages,x:-700, y:startingHeight+130, z:-600, width:800, height:800,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['cloud4'].threeObj,siteObject:GAME.stages,x:1450, y:startingHeight+80, z:-740, width:600, height:600,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['level0back'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight+30, z:-600, width:1920*2.1, height:540*2,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,siteObject:GAME.stages,x:0, y:startingHeight, z:-randomZRange-2, width:14.6*xSeparation, height:ySeparation,color:0x2ECADD, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['bush3'].threeObj,siteObject:GAME.stages,x:1300, y:startingHeight+70, z:-300, width:700, height:700,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({relX:1000,relY:startingHeight-150,relZ:0,locked:true,hidden:false,hardBottom:false,siteObject:GAME.stages,x:1000, y:startingHeight-150, z:-1, width:550, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
+    GAME.platforms.push(new GAME.Item({siteObject:GAME.stages,x:900, y:startingHeight-100, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['cloud3'].threeObj,siteObject:GAME.stages,x:-700, y:startingHeight+130, z:-600, width:800, height:800,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({relX:750,relY:startingHeight-25,relZ:-1,locked:true,hidden:false,hardBottom:false,siteObject:GAME.stages,x:750, y:startingHeight-25, z:-1, width:290, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
+    GAME.platforms.push(new GAME.Item({siteObject:GAME.stages,x:750, y:startingHeight+25, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['cloud4'].threeObj,siteObject:GAME.stages,x:1450, y:startingHeight+80, z:-740, width:600, height:600,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({relX:-400,relY:startingHeight+10,relZ:-1,locked:true,hidden:false,hardBottom:false,siteObject:GAME.stages,x:-400, y:startingHeight+10, z:-1, width:450, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF})); 
+    GAME.platforms.push(new GAME.Item({relX:0, relY: GAME.player.height/2.0+8,relZ:.01,siteObject:GAME.stages,x:-400, y:startingHeight+60, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['level0back'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight+30, z:-600, width:1920*2.1, height:540*2,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
     
 
     //GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['0--1transition'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight+50, z:-400, width:1920*1.7, height:540*1.5,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
     
     //GAME.platforms.push(new GAME.Platform({siteObject:GAME.stages,x:randomXRange*Math.random()-randomXRange/2.0, y:startingHeight+randomYRange*Math.random()-randomYRange/3.0, z:-1 -250- (randomZRange-250)*Math.random(), width:50, height:50,color:0x55FFFF, velocityX:0, velocityY:0,mass:1}));
   
-    GAME.platforms.push(new GAME.Item({relX:0, relY: GAME.player.height/2.0+8,relZ:.01,siteObject:GAME.stages,x:0, y:startingHeight-80+2*ySeparation, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
-    GAME.platforms.push(new GAME.Item({relX:GAME.player.width/2.0+8, relY: 0,relZ:.01,siteObject:GAME.stages,x:200, y:startingHeight-80+ySeparation, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
-    GAME.platforms.push(new GAME.Item({relX:-GAME.player.width/2.0-8, relY: 0,relZ:.01,siteObject:GAME.stages,x:-200, y:startingHeight-80, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
-    GAME.platforms.push(new GAME.Item({relX:0, relY: GAME.player.height/2.0+8,relZ:.01,siteObject:GAME.stages,x:0, y:startingHeight-80-ySeparation, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
-    GAME.platforms.push(new GAME.Item({relX:GAME.player.width/2.0+8, relY: 0,relZ:.01,siteObject:GAME.stages,x:200, y:startingHeight-80-2*ySeparation, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
-    GAME.platforms.push(new GAME.Item({relX:-GAME.player.width/2.0-8, relY: 0,relZ:.01,siteObject:GAME.stages,x:-200, y:startingHeight-80-3*ySeparation, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    //GAME.platforms.push(new GAME.Item({relX:GAME.player.width/2.0+8, relY: 0,relZ:.01,siteObject:GAME.stages,x:200, y:startingHeight-80+ySeparation, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    //GAME.platforms.push(new GAME.Item({relX:-GAME.player.width/2.0-8, relY: 0,relZ:.01,siteObject:GAME.stages,x:-200, y:startingHeight-80, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    //GAME.platforms.push(new GAME.Item({relX:GAME.player.width/2.0+8, relY: 0,relZ:.01,siteObject:GAME.stages,x:200, y:startingHeight-80-2*ySeparation, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    //GAME.platforms.push(new GAME.Item({relX:-GAME.player.width/2.0-8, relY: 0,relZ:.01,siteObject:GAME.stages,x:-200, y:startingHeight-80-3*ySeparation, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
 
 
 //GAME.platforms.push(new GAME.Item({relX:-GAME.player.width/2.0-8, relY: 0,relZ:.01,siteObject:GAME.stages,x:-200, y:150, z:GAME.playerPlane, width:20, height:20,color:0xFFD750, velocityX:0, velocityY:0,mass:1}));
     
 
     //Level 0 -1 transition
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['0--1transition'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-.7*ySeparation, z:-400, width:1920*1.76, height:540*1.5,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['0--1transition'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-.7*ySeparation, z:-400, width:1920*1.76, height:540*1.5,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
 
 
     //Rules/FAQ
     //GAME.platforms.push(new GAME.Button({hardBottom:false,siteObject:GAME.stages,x:-xSeparation, y:startingHeight-ySeparation, z:GAME.playerPlane-.02, width:290, height:20,color:gateColor, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({siteObject:GAME.stages,x:0, y:startingHeight-ySeparation, z:-randomZRange-1, width:14.6*xSeparation, height:ySeparation*1.2,color:0x1889A9, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['level-2front'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-ySeparation-20, z:-550, width:1920*2.0, height:540*1.6,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['level-2middle'].threeObj,siteObject:GAME.stages,x:-200, y:startingHeight-ySeparation-50, z:-725, width:1920*2, height:540*1.5,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['level-2back'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-ySeparation, z:-750, width:1920*2.5, height:540*1.3,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['-1--2transition'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-1.7*ySeparation, z:-400, width:1.8*1920, height:1.8*540,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,siteObject:GAME.stages,x:0, y:startingHeight-ySeparation, z:-randomZRange-1, width:14.6*xSeparation, height:ySeparation*1.2,color:0x1889A9, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['level-2front'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-ySeparation-20, z:-550, width:1920*2.0, height:540*1.6,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['level-2middle'].threeObj,siteObject:GAME.stages,x:-200, y:startingHeight-ySeparation-50, z:-725, width:1920*2, height:540*1.5,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['level-2back'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-ySeparation, z:-750, width:1920*2.5, height:540*1.3,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({relX:-870,relY:startingHeight-1.0*ySeparation-30,relZ:-1,locked:true,hidden:false,hardBottom:false,siteObject:GAME.stages,x:-870, y:startingHeight-1.0*ySeparation-30, z:-1, width:500, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
+    GAME.platforms.push(new GAME.Item({siteObject:GAME.stages,x:-1100, y:startingHeight-1.0*ySeparation+20, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+
+    GAME.platforms.push(new GAME.Platform({relX:800,relY:startingHeight-1.0*ySeparation-190,relZ:-1,locked:true,hidden:false,hardBottom:false,siteObject:GAME.stages,x:800, y:startingHeight-1.0*ySeparation-190, z:-1, width:850, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
+    GAME.platforms.push(new GAME.Item({siteObject:GAME.stages,x:800, y:startingHeight-1.0*ySeparation-140, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['-1--2transition'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-1.7*ySeparation, z:-400, width:1.8*1920, height:1.8*540,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
 
     //Resources
     //GAME.platforms.push(new GAME.Button({hardBottom:false,siteObject:GAME.stages,x:-2*xSeparation, y:startingHeight-2*ySeparation, z:GAME.playerPlane-.02, width:290, height:20,color:gateColor, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({siteObject:GAME.stages,x:0, y:startingHeight-2*ySeparation, z:-randomZRange-2, width:14.6*xSeparation, height:ySeparation*1.1,color:0x7C5A33, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['level-1middle'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-2*ySeparation-110, z:-650, width:1920*2.2, height:540*1.3,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['level-1back'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-2*ySeparation-100, z:-750, width:1920*2.5, height:540*1.6,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,siteObject:GAME.stages,x:0, y:startingHeight-2*ySeparation, z:-randomZRange-2, width:14.6*xSeparation, height:ySeparation*1.1,color:0x7C5A33, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['level-1middle'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-2*ySeparation-110, z:-650, width:1920*2.2, height:540*1.3,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['level-1back'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-2*ySeparation-100, z:-750, width:1920*2.5, height:540*1.6,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Item({siteObject:GAME.stages,x:-715, y:startingHeight-2.0*ySeparation+50, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Item({siteObject:GAME.stages,x:960, y:startingHeight-2.0*ySeparation, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
 
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['-2--3transition'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-2.848*ySeparation, z:-400, width:1920*1.8, height:540*2.0,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['-2--3transition'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-2.848*ySeparation, z:-400, width:1920*1.8, height:540*2.0,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
 
     //About the tea
-    GAME.siteObjects.push(new GAME.Platform({siteObject:GAME.stages,x:0, y:startingHeight-3.5*ySeparation, z:-randomZRange, width:14.6*xSeparation, height:1.9*ySeparation,color:0xB43139, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['level-3front'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-2.8*ySeparation, z:-600, width:1920*2.4, height:540*2.4,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['level-3middle'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-3.0*ySeparation-50, z:-700, width:1920*1.7, height:540*1.7,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['people1'].threeObj,siteObject:GAME.stages,x:-1200, y:startingHeight-3.2*ySeparation, z:-300, width:540, height:540,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['people2'].threeObj,siteObject:GAME.stages,x:-400, y:startingHeight-3.2*ySeparation, z:-100, width:540, height:540,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['people3'].threeObj,siteObject:GAME.stages,x:400, y:startingHeight-3.2*ySeparation, z:-200, width:540, height:540,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['people4'].threeObj,siteObject:GAME.stages,x:1200, y:startingHeight-3.2*ySeparation, z:-400, width:540, height:540,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,siteObject:GAME.stages,x:0, y:startingHeight-3.5*ySeparation, z:-randomZRange, width:14.6*xSeparation, height:1.9*ySeparation,color:0xB43139, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['level-3front'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-2.8*ySeparation, z:-600, width:1920*2.4, height:540*2.4,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['level-3middle'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-3.0*ySeparation-50, z:-700, width:1920*1.7, height:540*1.7,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['people1'].threeObj,siteObject:GAME.stages,x:-1200, y:startingHeight-3.2*ySeparation, z:-300, width:540, height:540,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({relX:-870,relY:startingHeight-3.0*ySeparation-155,relZ:-1,locked:true,hidden:false,hardBottom:false,siteObject:GAME.stages,x:-870, y:startingHeight-3.0*ySeparation-127, z:-1, width:150, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
+    GAME.platforms.push(new GAME.Item({siteObject:GAME.stages,x:-870, y:startingHeight-3.0*ySeparation-105, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['people2'].threeObj,siteObject:GAME.stages,x:-400, y:startingHeight-3.2*ySeparation, z:-100, width:540, height:540,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({relX:-360,relY:startingHeight-3.0*ySeparation-175,relZ:-1,locked:true,hidden:false,hardBottom:false,siteObject:GAME.stages,x:-360, y:startingHeight-3.0*ySeparation-143, z:-1, width:290, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
+    GAME.platforms.push(new GAME.Item({siteObject:GAME.stages,x:-360, y:startingHeight-3.0*ySeparation-125, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['people3'].threeObj,siteObject:GAME.stages,x:400, y:startingHeight-3.2*ySeparation, z:-200, width:540, height:540,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({relX:360,relY:startingHeight-3.0*ySeparation-162,relZ:-1,locked:true,hidden:false,hardBottom:false,siteObject:GAME.stages,x:360, y:startingHeight-3.0*ySeparation-128, z:-1, width:290, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
+    GAME.platforms.push(new GAME.Item({siteObject:GAME.stages,x:360, y:startingHeight-3.0*ySeparation-112, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['people4'].threeObj,siteObject:GAME.stages,x:1200, y:startingHeight-3.2*ySeparation, z:-400, width:540, height:540,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({relX:880,relY:startingHeight-3.0*ySeparation-155,relZ:-1,locked:true,hidden:false,hardBottom:false,siteObject:GAME.stages,x:800, y:startingHeight-3.0*ySeparation-123, z:-1, width:290, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
+    GAME.platforms.push(new GAME.Item({siteObject:GAME.stages,x:800, y:startingHeight-3.0*ySeparation-105, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
 
 
    /*
@@ -322,6 +358,7 @@ init:function() {
             GAME.platforms[currPlat+5].material.opacity = 1;
             //console.log(Math.abs(GAME.currentStage - 5));
             GAME.currentStage = 6;
+            console.log("siubf");
             //GAME.platforms[currPlat+6].material.color = new THREE.Color(selecedColor);
         }
     }

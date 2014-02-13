@@ -5,9 +5,13 @@ var GAME = GAME || {};
 
 
 GAME.Item = function(params){//(x, y, z, width, height, dWidth, dHeight, map, color, velocityX, velocityY, pathLength, front){
+    params.map = GAME.Textures['coin'].threeObj;
+    params.width=25;
+    params.height = 30;
+    params.locked = true;
     GAME.SiteObject.call( this, params );
     this.number = GAME.platforms.length;
-    this.relativePosition = new THREE.Vector3(params.relX,params.relY,params.relZ);
+    this.relativePosition = new THREE.Vector3 ( params.x, params.y, params.z );
     this.dX = 0;
     this.dY = 0;
     this.used = false;
@@ -23,14 +27,17 @@ GAME.Item.prototype.intersectPlayer = function(params) {
             //this.locked = true;
             GAME.scene.remove(this);
             GAME.score+=10;
-            var oldHeight = GAME.player.jumpHeight
+            var oldHeight = GAME.player.jumpHeight;
+            var oldJumps = GAME.player.jumps;
             GAME.scene.remove(GAME.player);
-        GAME.player = new GAME.Player({map:GAME.player.material.map,x:GAME.player.position.x, y:GAME.player.position.y, z:-.02, health:100, lives:4, width:GAME.player.width+5, height:GAME.player.height+5,color:0xFFFFFF, velocityX:GAME.player.velocity.x, velocityY:GAME.player.velocity.y, pathLength:0,mass:20} );
+        GAME.player = new GAME.Player({map:GAME.player.material.map,x:GAME.player.position.x, y:GAME.player.position.y+1.5625, z:GAME.player.position.z, health:100, lives:4, width:GAME.player.width+2, height:GAME.player.height+3.125,color:0xFFFFFF, velocityX:GAME.player.velocity.x, velocityY:GAME.player.velocity.y, pathLength:0,mass:20} );
         GAME.scene.add(GAME.player);
-            GAME.player.jumpHeight=oldHeight+1;
+            GAME.player.jumpHeight=oldHeight+.5;
+            GAME.player.jumps = oldJumps;
 
             GAME.player.setBounds();
             this.used=true;
+            document.getElementById("coin").play();
         }
     }
     /*if(interNum==0||interNum==2||interNum==3||interNum==4){

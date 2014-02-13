@@ -29,7 +29,9 @@
         <script src="level1.js"></script>
         <script src="Preloader.js"></script>
         <script src="textures.js"></script>
-
+        <audio id="coin" style="display:none">
+            <source src="Audio/coin-drop-4.mp3" type='audio/mpeg'>
+        </audio>
         
         
 		
@@ -145,7 +147,7 @@
             
             //used for moving objects
             function onDocumentMouseMove(event) {
-                tempX = mouseX;
+               /* tempX = mouseX;
                 tempY = mouseY;
                 mouseX = ( event.clientX - windowHalfX )*2;
 				mouseY = ( windowHalfY - event.clientY )*2;
@@ -162,7 +164,7 @@
                         }
                     }
                     GAME.intersectsPlatforms[closestObj].object.movePosition({ x:dX/3.5 , y:dY/3.5 , z:0 });
-                }
+                }*/
                 
             }
             
@@ -194,7 +196,7 @@
             function onDocumentMouseUp( event ) {
 
                 for(var i =0; i <GAME.intersectsPlatforms.length; i++){
-                    GAME.intersectsPlatforms[i].object.clicked();
+                    GAME.intersectsPlatforms[i].object.clicked({inGame:true});
                     GAME.intersectsPlatforms[i].object.velocity.x = 0;
                     GAME.intersectsPlatforms[i].object.velocity.y = 0;
                     GAME.intersectsPlatforms[i].object.held = false;
@@ -389,8 +391,8 @@
                         GAME.player.position.x = GAME.sideLocation-GAME.player.width/2.0-.02;
                     }
                     targetY = GAME.player.position.y;
-                    if(targetY > 150){
-                        targetY = 150;
+                    if(targetY > 250){
+                        targetY = 250;
                         if(!GAME.moving){
                             if(GAME.currentStage == 6){
                                 GAME.showTab5({inGame:true});
