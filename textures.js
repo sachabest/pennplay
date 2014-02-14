@@ -64,6 +64,8 @@ GAME.Textures = {
     'home' : {src:'Textures/Home.jpg',threeObj:undefined},
     'events' : {src:'Textures/Events.jpg',threeObj:undefined},
     'schedule' : {src:'Textures/Schedule.jpg',threeObj:undefined},
+    'contact' : {src:'Textures/Contact.jpg',threeObj:undefined},
+    'instructions' : {src:'Textures/Instructions.png',threeObj:undefined},
     'coin' : {src:'Textures/Coin.png',threeObj:undefined},
 
     /*'level1layer1' : {src:'Textures/Level1Layer1.png',threeObj:undefined},

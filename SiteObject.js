@@ -222,6 +222,7 @@ GAME.SiteObject.prototype.movePosition = function(params) {
     }
 
 GAME.SiteObject.prototype.moveToLocation = function(params){
+    //console.log("HELLLLo");
     if(params.velocityX!=null){
         this.velocity.x = params.velocityX;
         this.targetX = params.targetX;

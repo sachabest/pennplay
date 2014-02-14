@@ -76,7 +76,7 @@
 				GAME.scene = new THREE.Scene();
                 //GAME.scene.fog = new THREE.Fog( 0xFFFFFF, 500,2500);
                 camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
-                camera.position.z = targetZ;
+                camera.position.z = 750;
                 camera.position.y = -50;
                 GAME.scene.add( camera );
                 light = new THREE.SpotLight( 0x000000);
@@ -197,9 +197,9 @@
 
                 for(var i =0; i <GAME.intersectsPlatforms.length; i++){
                     GAME.intersectsPlatforms[i].object.clicked({inGame:true});
-                    GAME.intersectsPlatforms[i].object.velocity.x = 0;
+                    /*GAME.intersectsPlatforms[i].object.velocity.x = 0;
                     GAME.intersectsPlatforms[i].object.velocity.y = 0;
-                    GAME.intersectsPlatforms[i].object.held = false;
+                    GAME.intersectsPlatforms[i].object.held = false;*/
 
                 }
                 GAME.intersectsPlatforms = [];
@@ -391,8 +391,8 @@
                         GAME.player.position.x = GAME.sideLocation-GAME.player.width/2.0-.02;
                     }
                     targetY = GAME.player.position.y;
-                    if(targetY > 250){
-                        targetY = 250;
+                    if(targetY > 275){
+                        targetY = 275;
                         if(!GAME.moving){
                             if(GAME.currentStage == 6){
                                 GAME.showTab5({inGame:true});

@@ -21,7 +21,7 @@ var interNum = params.interNum;
         this.setBounds();
         GAME.player.setBounds();
     }else*/ 
-    if(!this.imaginary){
+    if(!this.imaginary&&this.velocity.y==0){
         if(interNum===1){
             GAME.player.intersected = true;
             GAME.player.jumps = 0;
