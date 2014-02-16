@@ -22,8 +22,33 @@ init:function() {
     //Array of platforms
     GAME.platforms = [];
 
+    var xSeparation = 300;
+    var ySeparation = 750;
+    var startingHeight =75;
+    var randomXRange = 5000.0;
+    var randomYRange = 250.0;
+    var randomZRange = 750.0;
+
     //Create player
-    GAME.player = new GAME.Player({map:GAME.Textures['playerwalkcycleright1'].threeObj,x:0, y:-150, z:.5, health:100, lives:4, width:32, height:50,color:0xFFFFFF, velocityX:0, velocityY:0, pathLength:0,mass:20} );
+    GAME.playerFrame = 0;
+    GAME.playerUpdateRule = function(params){
+        if(GAME.player.coins%3 == 0){
+            if(GAME.player.coins>0){
+                GAME.playerFrame+=1;
+                if(GAME.playerFrame<60){
+                    var val = GAME.playerFrame%6;
+                    if(val<3){
+                        console.log("boo");
+                    }else {
+                        console.log("hoo");
+                    }
+                }
+            }
+        }
+    }
+    GAME.playerLevel =0;
+    GAME.player = new GAME.Player({updateRule:GAME.playerUpdateRule, map:GAME.Textures['playerwalkcycleright1'].threeObj,x:-xSeparation/2.0-35, y:startingHeight, z:.5, health:100, lives:4, width:32, height:50,color:0xFFFFFF, velocityX:0, velocityY:0, pathLength:0,mass:20} );
+
     GAME.scene.add(GAME.player);
 
     GAME.score = 0;
@@ -49,22 +74,15 @@ init:function() {
     //GAME.platforms.push(new GAME.Platform({x:0, y:-200, z:GAME.backPlane, width:1000, height:20,color:0x000000, velocityX:0, velocityY:0,mass:1}));
    
     //Create trigger functions for bottom tabs
-    var xSeparation = 300;
-    var ySeparation = 750;
-    var startingHeight =75;
-    var randomXRange = 5000.0;
-    var randomYRange = 250.0;
-    var randomZRange = 750.0;
-
     //Create lowest platform
     GAME.gateWay = new GAME.SiteObject({hidden:true, x:0, y:0, z:GAME.playerPlane-.1, width:10, height:10,color:0x000000, velocityX:0, velocityY:0,mass:1});
     GAME.platforms.push(GAME.gateWay);
     var gateColor = 0xDDDDDD;
     GAME.stages = new GAME.SiteObject({hidden:true, x:0, y:0, z:GAME.playerPlane, width:10, height:10,color:0x000000, velocityX:0, velocityY:0,mass:1});
     GAME.platforms.push(GAME.stages);
-    GAME.platforms.push(new GAME.Platform({opacity:.8,hardBottom:false,siteObject:GAME.gateWay, x:-5.5*1.25*xSeparation/2.0 - xSeparation*1.25*3.0/8.0, y:-155, z:GAME.playerPlane+.01, width:5.5*1.25*xSeparation, height:20,color:0x737373, velocityX:0, velocityY:0,mass:1}));
-    GAME.platforms.push(new GAME.Platform({opacity:.8,hardBottom:false,siteObject:GAME.gateWay, x:5.5*1.25*xSeparation/2.0 + xSeparation*1.25*3.0/8.0, y:-155, z:GAME.playerPlane+.01, width:5.5*1.25*xSeparation, height:20,color:0x737373, velocityX:0, velocityY:0,mass:1}));
-    GAME.platforms.push(new GAME.Platform({opacity:.8,hardBottom:false,siteObject:GAME.gateWay, x:0, y:-155, z:GAME.playerPlane+.01, width:xSeparation*1.25*3.0/4.0, height:20,color:gateColor, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({locked:true,opacity:.8,hardBottom:false,siteObject:GAME.gateWay, x:-5.5*1.25*xSeparation/2.0 - xSeparation*1.25*3.0/8.0, y:-155, z:GAME.playerPlane+.01, width:5.5*1.25*xSeparation, height:20,color:0x737373, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({locked:true,opacity:.8,hardBottom:false,siteObject:GAME.gateWay, x:5.5*1.25*xSeparation/2.0 + xSeparation*1.25*3.0/8.0, y:-155, z:GAME.playerPlane+.01, width:5.5*1.25*xSeparation, height:20,color:0x737373, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({locked:true,opacity:.8,hardBottom:false,siteObject:GAME.gateWay, x:0, y:-155, z:GAME.playerPlane+.01, width:xSeparation*1.25*3.0/4.0, height:20,color:gateColor, velocityX:0, velocityY:0,mass:1}));
     
    
     //Bottom Barrier
@@ -73,8 +91,58 @@ init:function() {
     //Side barriers
     //GAME.platforms.push(new GAME.Platform({hardBottom:true,x:-4.25*xSeparation, y:-20, z:GAME.playerPlane+.01, width:300, height:500,color:0x000000, velocityX:0, velocityY:0,mass:1}));
     //GAME.platforms.push(new GAME.Platform({hardBottom:true,x:4.25*xSeparation, y:-20, z:GAME.playerPlane+.01, width:300, height:500,color:0x000000, velocityX:0, velocityY:0,mass:1}));
-    GAME.sideLocation = 3.95*xSeparation;
+    GAME.sideLocation = 3.7*xSeparation;
 
+
+
+    //"Tutorial"
+    GAME.siteObjects.push(new GAME.SiteObject({locked:true,siteObject:GAME.stages,map:GAME.Textures['ad'].threeObj,opacity:1.0,x:0, y:-90, z:-.2, width:621, height:62,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.SiteObject({locked:true,siteObject:GAME.stages,map:GAME.Textures['s'].threeObj,opacity:0,x:0, y:-90, z:-.2, width:314, height:62,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.siteObjects.push(new GAME.SiteObject({locked:true,siteObject:GAME.stages,map:GAME.Textures['w'].threeObj,opacity:1.0,x:0, y:-90-ySeparation, z:-.2, width:213, height:62,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    
+    GAME.frameCountThing = 0;
+    GAME.tempNum = GAME.siteObjects.length;
+    GAME.collectIsShown = false;
+    GAME.collectUpdateRule = function(params){
+        if(GAME.collectIsShown){
+            GAME.frameCountThing +=1.0;
+            if(GAME.frameCountThing > 90){
+                var newOpac = 1.0 - (GAME.frameCountThing-90.0)/120.0;
+                if (newOpac >= 0){
+                    GAME.siteObjects[GAME.tempNum].material.opacity = newOpac;
+                }
+            }
+        }
+    }
+    GAME.siteObjects.push(new GAME.SiteObject({updateRule:GAME.collectUpdateRule, locked:true,siteObject:GAME.stages,map:GAME.Textures['collect'].threeObj,opacity:0,x:0, y:-90-ySeparation, z:-.2, width:498, height:93,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    
+    var currNum = GAME.siteObjects.length-4;
+    var currPlatNum = GAME.siteObjects.length;
+    GAME.ad = function(params){
+        GAME.scene.remove(GAME.siteObjects[currNum]);
+        GAME.siteObjects[currNum+1].material.opacity = 1.0;
+        GAME.platforms[currPlatNum+1].material.opacity = 1.0;
+        GAME.platforms[currPlatNum+1].enabled = true;
+    }
+    GAME.s = function(params){
+        GAME.scene.remove(GAME.siteObjects[currNum+1]);
+        GAME.siteObjects[currNum+2].material.opacity = 1.0;
+        GAME.platforms[currPlatNum+2].material.opacity = 1.0;
+        GAME.platforms[currPlatNum+2].enabled = true;
+    }
+    GAME.w = function(params){
+        GAME.scene.remove(GAME.siteObjects[currNum+2]);
+        GAME.siteObjects[currNum+3].material.opacity = 1.0;
+        GAME.collectIsShown = true;
+    }
+    /*GAME.collect = function(params){
+        GAME.scene.remove(GAME.siteObjects[currNum+3]);
+        //GAME.siteObjects[siteObjects.length+1].opacity = .8;
+    }*/
+    GAME.platforms.push(new GAME.Item({trigger:GAME.ad, siteObject:GAME.stages,x:150, y:-125, z:-.1, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));  
+    GAME.platforms.push(new GAME.Item({opacity:0.0,enabled:false,trigger:GAME.s, siteObject:GAME.stages,x:150, y:-180, z:-.1, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Item({opacity:1.0,enabled:true,trigger:GAME.w, siteObject:GAME.stages,x:150, y:-125-ySeparation, z:-.1, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    //GAME.platforms.push(new GAME.Item({trigger:GAME.collect, siteObject:GAME.stages,x:200, y:startingHeight-100, z:-.1, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
 
     //Sponsors
     //GAME.platforms.push(new GAME.Button({hardBottom:false,siteObject:GAME.stages,x:2*xSeparation, y:startingHeight+2*ySeparation, z:GAME.playerPlane-.02, width:290, height:20,color:gateColor, velocityX:0, velocityY:0,mass:1}));
@@ -108,28 +176,34 @@ init:function() {
     var randomSideLength = 300.0;
     GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['cloud1'].threeObj,updateRule:GAME.cloudUpdateRule, hardBottom:false,siteObject:GAME.stages,x:randomXRange*Math.random()-randomXRange/2.0, y:startingHeight-100+ySeparation, z:GAME.playerPlane-.03, width:randomSideLength*Math.random()+randomSideLength, height:randomSideLength*Math.random()+randomSideLength,color:0xFFFFFF, velocityX:1+2*Math.random(), velocityY:0,mass:1}));
     GAME.platforms.push(new GAME.Platform({locked:true,hidden:true,hardBottom:false,siteObject:GAME.siteObjects[GAME.siteObjects.length-1],x:0, y:0, z:0, width:GAME.siteObjects[GAME.siteObjects.length-1].width-150, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
-    GAME.platforms.push(new GAME.Item({locked:true,siteObject:GAME.platforms[GAME.platforms.length-1],x:0, y:100, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Item({locked:true,siteObject:GAME.platforms[GAME.platforms.length-1],x:0, y:50, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
 
     GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['cloud2'].threeObj,updateRule:GAME.cloudUpdateRule, hardBottom:false,siteObject:GAME.stages,x:randomXRange*Math.random()-randomXRange/2.0, y:startingHeight-75+ySeparation, z:GAME.playerPlane-.03, width:randomSideLength*Math.random()+randomSideLength, height:randomSideLength*Math.random()+randomSideLength,color:0xFFFFFF, velocityX:1+2*Math.random(), velocityY:0,mass:1}));
     GAME.platforms.push(new GAME.Platform({locked:true,hidden:true,hardBottom:false,siteObject:GAME.siteObjects[GAME.siteObjects.length-1],x:0, y:0, z:0, width:GAME.siteObjects[GAME.siteObjects.length-1].width-150, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
-    GAME.platforms.push(new GAME.Item({locked:true,siteObject:GAME.platforms[GAME.platforms.length-1],x:0, y:100, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Item({locked:true,siteObject:GAME.platforms[GAME.platforms.length-1],x:0, y:50, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
  
     GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['cloud3'].threeObj,updateRule:GAME.cloudUpdateRule, hardBottom:false,siteObject:GAME.stages,x:randomXRange*Math.random()-randomXRange/2.0, y:startingHeight-50+ySeparation, z:GAME.playerPlane-.03, width:randomSideLength*Math.random()+randomSideLength, height:randomSideLength*Math.random()+randomSideLength,color:0xFFFFFF, velocityX:1+2*Math.random(), velocityY:0,mass:1}));
     GAME.platforms.push(new GAME.Platform({locked:true,hidden:true,hardBottom:false,siteObject:GAME.siteObjects[GAME.siteObjects.length-1],x:0, y:0, z:0, width:GAME.siteObjects[GAME.siteObjects.length-1].width-150, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
-    GAME.platforms.push(new GAME.Item({locked:true,siteObject:GAME.platforms[GAME.platforms.length-1],x:0, y:100, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Item({locked:true,siteObject:GAME.platforms[GAME.platforms.length-1],x:0, y:50, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
 
     GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['cloud4'].threeObj,updateRule:GAME.cloudUpdateRule, hardBottom:false,siteObject:GAME.stages,x:randomXRange*Math.random()-randomXRange/2.0, y:startingHeight-25+ySeparation, z:GAME.playerPlane-.03, width:randomSideLength*Math.random()+randomSideLength, height:randomSideLength*Math.random()+randomSideLength,color:0xFFFFFF, velocityX:1+2*Math.random(), velocityY:0,mass:1}));
     GAME.platforms.push(new GAME.Platform({locked:true,hidden:true,hardBottom:false,siteObject:GAME.siteObjects[GAME.siteObjects.length-1],x:0, y:0, z:0, width:GAME.siteObjects[GAME.siteObjects.length-1].width-150, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
-    GAME.platforms.push(new GAME.Item({locked:true,siteObject:GAME.platforms[GAME.platforms.length-1],x:0, y:100, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Item({locked:true,siteObject:GAME.platforms[GAME.platforms.length-1],x:0, y:50, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
 
     GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['cloud5'].threeObj,updateRule:GAME.cloudUpdateRule, hardBottom:false,siteObject:GAME.stages,x:randomXRange*Math.random()-randomXRange/2.0, y:startingHeight+ySeparation, z:GAME.playerPlane-.03, width:randomSideLength*Math.random()+randomSideLength, height:randomSideLength*Math.random()+randomSideLength,color:0xFFFFFF, velocityX:1+2*Math.random(), velocityY:0,mass:1}));
     GAME.platforms.push(new GAME.Platform({locked:true,hidden:true,hardBottom:false,siteObject:GAME.siteObjects[GAME.siteObjects.length-1],x:0, y:0, z:0, width:GAME.siteObjects[GAME.siteObjects.length-1].width-150, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
-    GAME.platforms.push(new GAME.Item({locked:true,siteObject:GAME.platforms[GAME.platforms.length-1],x:0, y:100, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Item({locked:true,siteObject:GAME.platforms[GAME.platforms.length-1],x:0, y:50, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
 
     GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['sun'].threeObj,siteObject:GAME.stages,x:800, y:startingHeight+ySeparation, z:-750, width:400, height:400,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['bird1'].threeObj,siteObject:GAME.stages,x:-800, y:startingHeight+ySeparation+50, z:-300, width:150, height:150,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
-    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['bird2'].threeObj,siteObject:GAME.stages,x:-550, y:startingHeight+ySeparation-100, z:-300, width:100, height:100,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({relX:400,relY:startingHeight+ySeparation-110,relZ:-1,locked:true,hidden:true,hardBottom:false,siteObject:GAME.stages,x:-400, y:startingHeight+10, z:-1, width:150, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF})); 
+    
 
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['bird1'].threeObj,siteObject:GAME.stages,x:-800, y:startingHeight+ySeparation+50, z:-300, width:150, height:150,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({relX:-390,relY:startingHeight+ySeparation-105,relZ:-1,locked:true,hidden:true,hardBottom:false,siteObject:GAME.stages,x:-400, y:startingHeight+10, z:-1, width:50, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF})); 
+    
+    GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['bird2'].threeObj,siteObject:GAME.stages,x:-550, y:startingHeight+ySeparation-100, z:-300, width:100, height:100,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Platform({relX:-567,relY:startingHeight+ySeparation-13,relZ:-1,locked:true,hidden:true,hardBottom:false,siteObject:GAME.stages,x:-400, y:startingHeight+10, z:-1, width:65, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF})); 
+    
     /*
     GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['cloud2'].threeObj,opacity:.9,updateRule:GAME.cloudUpdateRule, hardBottom:false,siteObject:GAME.stages,x:randomXRange*Math.random()-randomXRange/2.0, y:startingHeight+randomYRange*Math.random()-randomYRange/1.0+ySeparation, z:GAME.playerPlane-.03, width:randomSideLength*Math.random()+randomSideLength, height:randomSideLength*Math.random()+randomSideLength,color:0xFFFFFF, velocityX:1+2*Math.random(), velocityY:0,mass:1}));
     GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['cloud3'].threeObj,opacity:.9,updateRule:GAME.cloudUpdateRule, hardBottom:false,siteObject:GAME.stages,x:randomXRange*Math.random()-randomXRange/2.0, y:startingHeight+randomYRange*Math.random()-randomYRange/1.0+ySeparation, z:GAME.playerPlane-.03, width:randomSideLength*Math.random()+randomSideLength, height:randomSideLength*Math.random()+randomSideLength,color:0xFFFFFF, velocityX:1+2*Math.random(), velocityY:0,mass:1}));
@@ -150,12 +224,15 @@ init:function() {
     GAME.platforms.push(new GAME.Platform({relX:-400,relY:startingHeight+10,relZ:-1,locked:true,hidden:true,hardBottom:false,siteObject:GAME.stages,x:-400, y:startingHeight+10, z:-1, width:350, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF})); 
     GAME.platforms.push(new GAME.Item({relX:0, relY: GAME.player.height/2.0+8,relZ:.01,siteObject:GAME.stages,x:-400, y:startingHeight+60, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
     
+    GAME.platforms.push(new GAME.Platform({relX:-500,relY:startingHeight-110,relZ:-1,locked:true,hidden:true,hardBottom:false,siteObject:GAME.stages,x:-400, y:startingHeight+10, z:-1, width:450, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF})); 
+    GAME.platforms.push(new GAME.Platform({relX:445,relY:startingHeight-70,relZ:-1,locked:true,hidden:true,hardBottom:false,siteObject:GAME.stages,x:-400, y:startingHeight+10, z:-1, width:250, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF})); 
+ 
     GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['level0back'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight+30, z:-600, width:1920*2.2, height:540*2,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
     
         //Events
         GAME.frameCountThing =0.0;
         GAME.num = GAME.siteObjects.length;
-    GAME.instructionsUpdateRule = function(params){
+    /*GAME.instructionsUpdateRule = function(params){
         GAME.frameCountThing +=1.0;
         if(GAME.frameCountThing > 600){
             var newOpac = .8 - (GAME.frameCountThing-600.0)/120.0;
@@ -165,7 +242,7 @@ init:function() {
         }
     }
     GAME.siteObjects.push(new GAME.SiteObject({updateRule: GAME.instructionsUpdateRule,opacity:.8,map:GAME.Textures['instructions'].threeObj,x:-750, y:startingHeight-40, z:-1, width:325, height:200,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
- 
+ */
 
     //GAME.siteObjects.push(new GAME.Platform({map:GAME.Textures['0--1transition'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight+50, z:-400, width:1920*1.7, height:540*1.5,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
     
@@ -191,7 +268,7 @@ init:function() {
     GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['level-2middle'].threeObj,siteObject:GAME.stages,x:-200, y:startingHeight-ySeparation-50, z:-725, width:1920*2.2, height:540*1.5,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
     GAME.siteObjects.push(new GAME.Platform({locked:true,map:GAME.Textures['level-2back'].threeObj,siteObject:GAME.stages,x:0, y:startingHeight-ySeparation, z:-750, width:1920*2.7, height:540*1.3,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
     GAME.platforms.push(new GAME.Platform({relX:-930,relY:startingHeight-1.0*ySeparation-30,relZ:-1,locked:true,hidden:true,hardBottom:false,siteObject:GAME.stages,x:-870, y:startingHeight-1.0*ySeparation-30, z:-1, width:500, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
-    GAME.platforms.push(new GAME.Item({siteObject:GAME.stages,x:-1100, y:startingHeight-1.0*ySeparation+20, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Item({siteObject:GAME.stages,x:-900, y:startingHeight-1.0*ySeparation+20, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
 
     GAME.platforms.push(new GAME.Platform({relX:800,relY:startingHeight-1.0*ySeparation-190,relZ:-1,locked:true,hidden:true,hardBottom:false,siteObject:GAME.stages,x:800, y:startingHeight-1.0*ySeparation-190, z:-1, width:800, height:2, velocityX:0, velocityY:0,mass:1,color:0xFFFFFF}));
     GAME.platforms.push(new GAME.Item({siteObject:GAME.stages,x:800, y:startingHeight-1.0*ySeparation-140, z:GAME.playerPlane, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
@@ -433,7 +510,10 @@ init:function() {
         if(!GAME.siteObjects[i].hidden){
             GAME.scene.add(GAME.siteObjects[i]);
         }
+
     }
+
+        GAME.showTab3({inGame:true});
                             },
                             
                             

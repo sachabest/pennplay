@@ -15,29 +15,39 @@ GAME.Item = function(params){//(x, y, z, width, height, dWidth, dHeight, map, co
     this.dX = 0;
     this.dY = 0;
     this.used = false;
+    if(params.enabled!=null){
+        this.enabled=params.enabled;
+    } else{
+        this.enabled = true;
+    }
 };
 
 GAME.Item.prototype = GAME.clone(GAME.SiteObject.prototype);
 GAME.Item.prototype.constructor = GAME.Item;
 GAME.Item.prototype.intersectPlayer = function(params) {
-    if(!this.used){
+    if(!this.used&&!GAME.moving&&this.enabled){
         var interNum = params.interNum;
         if(interNum!=-1){
+            if(this.trigger){
+                this.trigger();
+            }
             //this.siteObject = GAME.player;
             //this.locked = true;
+            //GAME.player.score+=10;
+            GAME.playerFrame = 0;
             GAME.scene.remove(this);
             GAME.score+=10;
             var oldHeight = GAME.player.jumpHeight;
             var oldJumps = GAME.player.jumps;
-            GAME.scene.remove(GAME.player);
-        GAME.player = new GAME.Player({map:GAME.player.material.map,x:GAME.player.position.x, y:GAME.player.position.y+1.5625, z:GAME.player.position.z, health:100, lives:4, width:GAME.player.width+2, height:GAME.player.height+3.125,color:0xFFFFFF, velocityX:GAME.player.velocity.x, velocityY:GAME.player.velocity.y, pathLength:0,mass:20} );
-        GAME.scene.add(GAME.player);
-            GAME.player.jumpHeight=oldHeight+.5;
-            GAME.player.jumps = oldJumps;
-
-            GAME.player.setBounds();
+            GAME.player.coins+=1;
+            var numCoins = GAME.player.coins%3;
+            if(numCoins == 0){
+                GAME.player.grow();
+                document.getElementById("levelup").play();
+            } else{
+                document.getElementById("coin").play();
+            }
             this.used=true;
-            document.getElementById("coin").play();
         }
     }
     /*if(interNum==0||interNum==2||interNum==3||interNum==4){

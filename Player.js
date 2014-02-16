@@ -17,7 +17,11 @@ GAME.Player = function(params){
     
     this.jumps =0;
     this.bounces = 0;
-    this.jumpHeight = 5.5;
+   // if(params.jumpHeight){
+        //this.jumpHeight = Params.jumpHeight;
+   // } else{
+        this.jumpHeight=5.5+GAME.playerLevel*.8;
+    //}
     this.horizontalSpeed = 5;
     this.intersected = false;
     this.impededRight = false;
@@ -27,6 +31,7 @@ GAME.Player = function(params){
     this.jumpLevel = 0;
     this.platformNumber = -1;
     this.dropThrough = false;
+    this.coins = 0;
     /*var plane = new THREE.PlaneGeometry(this.width,this.height);
     //this.material = new THREE.MeshPhongMaterial({color: 0xFFFFFF, map: GAME.Textures['player'].threeObj, emissive:0x080808, transparent:true, side:THREE.DoubleSide});
     this.material = new THREE.MeshPhongMaterial({color: 0xAA00FF, emissive:0x080808, transparent:true, side:THREE.DoubleSide});
@@ -164,7 +169,13 @@ GAME.Player.prototype.updatePosition = function(params) {
         this.position.z+=params.z;
         this.path = ({ left:this.position.x -this.pathLength/2, top:this.position.y + this.height +this.pathLength/2, right:this.position.x + this.width+this.pathLength/2, bottom:this.position.y-this.pathLength/2 });
     }*/
-    
+    GAME.Player.prototype.grow = function(params){
+        GAME.playerLevel+=1;
+        GAME.scene.remove(GAME.player);
+        GAME.player = new GAME.Player({map:GAME.player.material.map,x:GAME.player.position.x, y:GAME.player.position.y+3.125, z:GAME.player.position.z, health:100, lives:4, width:GAME.player.width+4, height:GAME.player.height+6.25,color:0xFFFFFF, velocityX:GAME.player.velocity.x, velocityY:GAME.player.velocity.y, pathLength:0,mass:20} );
+        GAME.scene.add(GAME.player);
+        GAME.player.setBounds();
+    }
    GAME.Player.prototype.reset = function(params) {
        /*if(params.level ===2) {
             this.height = 161;

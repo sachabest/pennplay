@@ -32,6 +32,11 @@
         <audio id="coin" style="display:none">
             <source src="Audio/coin-drop-4.mp3" type='audio/mpeg'>
         </audio>
+
+
+        <audio id="levelup" style="display:none">
+            <source src="Audio/LevelUp.wav" type='audio/wav'>
+        </audio>
         
         
 		
@@ -127,9 +132,9 @@
 				container.appendChild( renderer.domElement );
                 
 				stats = new Stats();
-				stats.domElement.style.position = 'absolute';
+				/*stats.domElement.style.position = 'absolute';
 				stats.domElement.style.top = '0px';
-				container.appendChild( stats.domElement );
+				container.appendChild( stats.domElement );*/
                 
                 
                 //event listeners
@@ -419,10 +424,35 @@
                     if(targetX < -300){
                         targetX = -300;
                     }
+                if(GAME.player.coins%3 === 0){
+                    //console.log(GAME.player.coins);
+                    if(GAME.score>0){
+                    //console.log("Something");
+
+                        GAME.playerFrame+=1;
+                        if(GAME.playerFrame<32){
+                            var val = GAME.playerFrame%8;
+                            if(val<4){
+                                GAME.scene.remove(GAME.player);
+                                GAME.player = new GAME.Player({map:GAME.player.material.map,x:GAME.player.position.x, y:GAME.player.position.y-3.125, z:GAME.player.position.z, health:100, lives:4, width:GAME.player.width-4, height:GAME.player.height-6.25,color:0xFFFFFF, velocityX:GAME.player.velocity.x, velocityY:GAME.player.velocity.y, pathLength:0,mass:20} );
+                                GAME.scene.add(GAME.player);
+                            }else {
+                                 
+                                GAME.scene.remove(GAME.player);
+                                GAME.player = new GAME.Player({map:GAME.player.material.map,x:GAME.player.position.x, y:GAME.player.position.y+3.125, z:GAME.player.position.z, health:100, lives:4, width:GAME.player.width+4, height:GAME.player.height+6.25,color:0xFFFFFF, velocityX:GAME.player.velocity.x, velocityY:GAME.player.velocity.y, pathLength:0,mass:20} );
+                                GAME.scene.add(GAME.player);
+                            }
+                        }  else if(GAME.playerFrame==32){
+                            //GAME.player.jumpHeight+=GAME.playerLevel*.8;
+                            //GAME.player.jumps = 0;
+                        }
+                    }
+                }
                     for(var i = 0; i<GAME.siteObjects.length; i++){
                         GAME.siteObjects[i].updatePosition();
                     }
                 }
+
 
                 //console.log(GAME.player.position.y);
                 //targetZ = 700;
