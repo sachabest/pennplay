@@ -62,7 +62,11 @@ this.once = true;
     }
     this.hardSides = params.hardSides;
     this.imaginary = params.imaginary;
-
+    if(params.sticky!=null){
+        this.sticky=params.sticky;
+    } else{
+        this.sticky=true;
+    }
     //PARENT
     this.locked = false;
     this.siteObject = params.siteObject;
@@ -257,7 +261,7 @@ GAME.SiteObject.prototype.setPosition = function(params) {
 
     GAME.SiteObject.prototype.clicked = function() {
         
-        if(this.trigger&&!this.alreadyTriggered){
+        if(this.trigger){
                 //console.log("TRIGGERED");
                 this.trigger({inGame:true});
                 this.alreadyTriggered = true;

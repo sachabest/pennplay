@@ -26,7 +26,9 @@ var interNum = params.interNum;
             GAME.player.intersected = true;
             GAME.player.jumps = 0;
             GAME.player.platformNumber = this.number;
-            GAME.player.siteObject = this;
+            if(this.sticky){
+                GAME.player.siteObject = this;
+            }
             var adjust = GAME.player.height/2;
             if(GAME.player.dropThrough&&!this.hardBottom){
                 adjust-=2;
