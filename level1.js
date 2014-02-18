@@ -21,6 +21,8 @@ init:function() {
     GAME.buttons = [];
     //Array of platforms
     GAME.platforms = [];
+    GAME.letters = [];
+    GAME.coinNumber = 0;
 
     var xSeparation = 300;
     var ySeparation = 750;
@@ -140,10 +142,28 @@ init:function() {
         //GAME.siteObjects[siteObjects.length+1].opacity = .8;
     }*/
     GAME.platforms.push(new GAME.Item({trigger:GAME.ad, siteObject:GAME.stages,x:150, y:-125, z:-.1, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));  
-    GAME.platforms.push(new GAME.Item({opacity:0.0,enabled:false,trigger:GAME.s, siteObject:GAME.stages,x:150, y:-180, z:-.1, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
-    GAME.platforms.push(new GAME.Item({opacity:1.0,enabled:true,trigger:GAME.w, siteObject:GAME.stages,x:150, y:-125-ySeparation, z:-.1, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Item({opacity:0.0,enabled:false,trigger:GAME.s, siteObject:GAME.stages,x:175, y:-180, z:-.1, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
+    GAME.platforms.push(new GAME.Item({opacity:1.0,enabled:true,trigger:GAME.w, siteObject:GAME.stages,x:225, y:-125-ySeparation, z:-.1, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
     //GAME.platforms.push(new GAME.Item({trigger:GAME.collect, siteObject:GAME.stages,x:200, y:startingHeight-100, z:-.1, width:20, height:20,color:0xFFD700, velocityX:0, velocityY:0,mass:1}));
 
+    //Win!
+
+    var RLetter = [[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,0],[1,0,1,0,0],[1,0,0,1,0],[1,0,0,0,1]];
+    var ELetter = [[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0],[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0],[1,1,1,1,1]];
+    var GLetter = [[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0],[1,0,1,1,1],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,1]];
+    var ILetter = [[1,1,1,1,1],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[1,1,1,1,1]];
+    var SLetter = [[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0],[1,1,1,1,1],[0,0,0,0,1],[0,0,0,0,1],[1,1,1,1,1]];
+    var TLetter = [[1,1,1,1,1],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0]];
+    var ExlcamationMark = [[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,0,0,0],[0,0,1,0,0]];
+    GAME.createLetter({letter:RLetter, x:-800,y:-50});
+    GAME.createLetter({letter:ELetter, x:-600,y:-50});
+    GAME.createLetter({letter:GLetter, x:-400,y:-50});
+    GAME.createLetter({letter:ILetter, x:-200,y:-50});
+    GAME.createLetter({letter:SLetter, x:-0,y:-50});
+    GAME.createLetter({letter:TLetter, x:200,y:-50});
+    GAME.createLetter({letter:ELetter, x:400,y:-50});
+    GAME.createLetter({letter:RLetter, x:600,y:-50});
+    GAME.createLetter({letter:ExlcamationMark, x:800,y:-50});
     //Sponsors
     //GAME.platforms.push(new GAME.Button({hardBottom:false,siteObject:GAME.stages,x:2*xSeparation, y:startingHeight+2*ySeparation, z:GAME.playerPlane-.02, width:290, height:20,color:gateColor, velocityX:0, velocityY:0,mass:1}));
     GAME.siteObjects.push(new GAME.Platform({locked:false,siteObject:GAME.stages,x:0, y:startingHeight+2.5*ySeparation, z:-1500, width:25*xSeparation, height:3*ySeparation,color:0x8B31B4, velocityX:0, velocityY:0,mass:1}));
@@ -506,9 +526,13 @@ init:function() {
     GAME.platforms.push(new GAME.Button({imaginary:true,siteObject:GAME.platforms[GAME.platforms.length-6],map:GAME.Textures['contact'].threeObj, x:0, y:heightAdjust, z:GAME.textPlane, width:xSeparation, height:textHeight,color:0xFFFFFF, velocityX:0, velocityY:0,mass:1}));
     */
     //push everying into siteObjects
+    for(var i = 0; i < GAME.letters.length; i++) {
+        GAME.platforms.push(GAME.letters[i]);
+    }
     for(var i = 0; i < GAME.platforms.length; i++) {
         GAME.siteObjects.push(GAME.platforms[i]);
     }
+
     //Add all siteobjects to the GAME.scene
      for(var i = 0; i < GAME.siteObjects.length; i++) {
         if(GAME.siteObjects[i].position.z != GAME.backPlane){
